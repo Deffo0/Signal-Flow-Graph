@@ -1,0 +1,48 @@
+.body{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  background: -webkit-linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000);
+}
+.vtool_bar{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(24, 25, 26);
+  width: 110px;
+  height: 605px;
+  left: 0px;
+  top: 62px;
+  border-radius: 10px;
+  border-color:transparent;
+}
+.vtool_bar button{
+  width: 76px;
+  height: 47px;
+  border-radius: 10px;
+  background-color:transparent;
+  border-color: transparent;
+  color: rgb(227, 231, 224);
+  font-size: 18px;
+
+}
+
+
+.vtool_bar button:hover{
+  background-color: rgba(58, 57, 57, 0.856);
+
+
+}
+canvas{
+  position: absolute;
+  background-color: rgb(24, 25, 26);
+  top: 65px;
+  left: 120px;
+  border-radius: 10px;
+}
