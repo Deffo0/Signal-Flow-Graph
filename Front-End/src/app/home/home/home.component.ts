@@ -232,26 +232,50 @@ export class HomeComponent implements OnInit {
         break;
 
         case "line":
-          area.moveTo(x, y);
-          area.bezierCurveTo(x, y,x+100,y+100,width,height);
-          canvasGlobal.beginPath();
-          canvasGlobal.strokeStyle = stCo;
-          canvasGlobal.lineWidth = stWi;
-          canvasGlobal.moveTo(x, y);
-          canvasGlobal.bezierCurveTo(x, y,x+100,y+100,width,height);
-          canvasGlobal.stroke();
-          var angle=Math.PI+Math.atan2(height-y-100,width-x-100);
-          var angle1=angle+Math.PI/6;
-          var angle2=angle-Math.PI/6;
-          canvasGlobal.beginPath();
-          canvasGlobal.strokeStyle = stCo;
-          canvasGlobal.lineWidth = stWi;
-          canvasGlobal.fillStyle = "darkred"
-          canvasGlobal.moveTo(width, height);
-          canvasGlobal.arc(width,height,20,angle1,angle2,true);
-          canvasGlobal.lineTo(width, height);
-          canvasGlobal.fill();
-          canvasGlobal.closePath();
+          if(width > x){
+            area.moveTo(x, y);
+            area.quadraticCurveTo(x+Math.abs(x-width)/2,y+Math.abs(x-width)/2,width,height);
+            canvasGlobal.beginPath();
+            canvasGlobal.strokeStyle = stCo;
+            canvasGlobal.lineWidth = stWi;
+            canvasGlobal.moveTo(x, y);
+            canvasGlobal.quadraticCurveTo(x+Math.abs(x-width)/2,y+Math.abs(x-width)/2,width,height);
+            canvasGlobal.stroke();
+            var angle=Math.PI+Math.atan2(height-y-Math.abs(x-width)/2,width-x-Math.abs(x-width)/2);
+            var angle1=angle+Math.PI/6;
+            var angle2=angle-Math.PI/6;
+            canvasGlobal.beginPath();
+            canvasGlobal.strokeStyle = stCo;
+            canvasGlobal.lineWidth = stWi;
+            canvasGlobal.fillStyle = "darkred"
+            canvasGlobal.moveTo(width, height);
+            canvasGlobal.arc(width,height,20,angle1,angle2,true);
+            canvasGlobal.lineTo(width, height);
+            canvasGlobal.fill();
+            canvasGlobal.closePath();
+          }else{
+            area.moveTo(x, y);
+            area.quadraticCurveTo(x-Math.abs(x-width)/2,y-Math.abs(x-width)/2,width,height);
+            canvasGlobal.beginPath();
+            canvasGlobal.strokeStyle = stCo;
+            canvasGlobal.lineWidth = stWi;
+            canvasGlobal.moveTo(x, y);
+            canvasGlobal.quadraticCurveTo(x-Math.abs(x-width)/2,y-Math.abs(x-width)/2,width,height);
+            canvasGlobal.stroke();
+            var angle=Math.PI+Math.atan2(height-y+Math.abs(x-width)/2,width-x+Math.abs(x-width)/2);
+            var angle1=angle+Math.PI/6;
+            var angle2=angle-Math.PI/6;
+            canvasGlobal.beginPath();
+            canvasGlobal.strokeStyle = stCo;
+            canvasGlobal.lineWidth = stWi;
+            canvasGlobal.fillStyle = "darkred"
+            canvasGlobal.moveTo(width, height);
+            canvasGlobal.arc(width,height,20,angle1,angle2,true);
+            canvasGlobal.lineTo(width, height);
+            canvasGlobal.fill();
+            canvasGlobal.closePath();
+          }
+
           break;
 
         default:
