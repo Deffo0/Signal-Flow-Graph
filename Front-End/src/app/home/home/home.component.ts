@@ -109,6 +109,8 @@ export interface Buffer {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+
 export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
@@ -500,8 +502,6 @@ export class HomeComponent implements OnInit {
     for(var i = 0; i < shapesBack.length; i++){
       this.placeElement(shapesBack[i], "");
     }
-
-
   }
 
 //----------------------------------------------------------------------//
