@@ -11,9 +11,10 @@ var shapesBack:shapeBack[] = [];
 
 //mapping between shape ID and its area on canvas
 let machineArea = new Map<string, Path2D>();
-let forwardProductionNetwork = new Map<string,string[]>();
-let backwardProductionNetwork = new Map<string,string[]>();
-
+let forwardProductionNetwork = new Map<string, string[]>();
+let backwardProductionNetwork = new Map<string, string[]>();
+let lineArea = new Map<string, Path2D>();
+let lineFuncs = new Map<string, string>();
 
 //----------------------------------------------------------------------//
 
@@ -77,6 +78,7 @@ export interface shapeBack{
   is_filled:number;
   shapeID:string;
   order:number;
+  func:string;
 }
 
 export interface elementsMap {
@@ -116,6 +118,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     var start : shapeBack;
     var end : shapeBack;
+    this.createFunc();
 
     start={
       x : 25,
@@ -128,7 +131,8 @@ export class HomeComponent implements OnInit {
       is_filled : 1,
       stWi : 2,
       shapeID : "machine".concat(get_new_ID()),
-      order:machineCounter
+      order:machineCounter,
+      func : null,
       }
       createMachineFlag =false;
       createdMachine = true;
@@ -149,7 +153,8 @@ export class HomeComponent implements OnInit {
         is_filled : 1,
         stWi : 2,
         shapeID : "machine".concat(get_new_ID()),
-        order:machineCounter
+        order:machineCounter,
+        func : null
         }
         createMachineFlag =false;
         createdMachine = true;
@@ -275,14 +280,14 @@ export class HomeComponent implements OnInit {
             canvasGlobal.fill();
             canvasGlobal.closePath();
           }
+          lineArea.set(ID, area);
+          area = null;
 
           break;
 
         default:
           break;
-
     }
-
   }
 
 //----------------------------------------------------------------------//
@@ -293,6 +298,24 @@ export class HomeComponent implements OnInit {
     var sw = <HTMLInputElement>document.getElementById("stroke_width");
     var strwid : number = parseInt(sw.value);
     strokeWidth = strwid;
+  }
+  
+  createFunc(){
+    var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
+    var canvasGlobal = boardGlobal.getContext("2d")!;
+
+
+    boardGlobal.addEventListener("mousedown", e => {
+      for(var shape of shapesBack){
+        if(shape.type == "line"){
+          if(canvasGlobal.isPointInPath(lineArea.get(shape.shapeID),e.offsetX,e.offsetY)){
+            
+            let func = prompt("Enter a Transfere Function");
+            lineFuncs.set(draw_line.shapeID, func);
+          }
+        }
+      }
+    });
   }
 
 //----------------------------------------------------------------------//
@@ -327,9 +350,11 @@ export class HomeComponent implements OnInit {
                     fiCo : "black",
                     type : "line",
                     is_filled : 1,
-                    stWi : 0.80,
+                    stWi : 2.50,
                     shapeID : get_new_ID(),
-                    order:0
+                    order:0,
+                    func : null
+
                     }
                     selectLine = true;
                     createdLine = true
@@ -391,6 +416,8 @@ export class HomeComponent implements OnInit {
                   }
                   if(draw_line != null && (draw_line.width != 0 && draw_line.height != 0)){
                     this.placeElement(draw_line, "");
+                    let func = prompt("Enter a Transfere Function");
+                    lineFuncs.set(draw_line.shapeID, func);
                     shapesBack.push(draw_line);
                   }
                   draw_line = null;
@@ -476,7 +503,8 @@ export class HomeComponent implements OnInit {
           is_filled : 1,
           stWi : 2,
           shapeID : "Machine".concat(get_new_ID()),
-          order :machineCounter
+          order :machineCounter,
+          func: null
 
           }
         createMachineFlag = false;
