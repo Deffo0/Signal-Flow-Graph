@@ -1,6 +1,6 @@
-package com.example.sgf.service;
+package com.example.SFG.services;
 
-import com.example.sgf.model.Node;
+import com.example.SFG.model.Node;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
