@@ -190,7 +190,8 @@ export class HomeComponent implements OnInit {
     var isfilled = shape.is_filled;
     var type = shape.type;
     var ID = shape.shapeID;
-    var order = shape.order
+    var order = shape.order;
+    var func = shape.func;
 
 
 
@@ -249,6 +250,10 @@ export class HomeComponent implements OnInit {
             var angle=Math.PI+Math.atan2(height-y-Math.abs(x-width)/2,width-x-Math.abs(x-width)/2);
             var angle1=angle+Math.PI/6;
             var angle2=angle-Math.PI/6;
+            canvasGlobal.strokeStyle = "white";
+            canvasGlobal.font = "30px Comic Sans MS";
+            canvasGlobal.textAlign="center";
+            canvasGlobal.strokeText(func,x+Math.abs(x-width)/2,y+Math.abs(y-(y+Math.abs(x-width)/2))/2);
             canvasGlobal.beginPath();
             canvasGlobal.strokeStyle = stCo;
             canvasGlobal.lineWidth = stWi;
@@ -270,6 +275,10 @@ export class HomeComponent implements OnInit {
             var angle=Math.PI+Math.atan2(height-y+Math.abs(x-width)/2,width-x+Math.abs(x-width)/2);
             var angle1=angle+Math.PI/6;
             var angle2=angle-Math.PI/6;
+            canvasGlobal.strokeStyle = "white";
+            canvasGlobal.font = "30px Comic Sans MS";
+            canvasGlobal.textAlign="center";
+            canvasGlobal.strokeText(func,x-Math.abs(x-width)/2,y-Math.abs(y-(y-Math.abs(x-width)/2))/2);
             canvasGlobal.beginPath();
             canvasGlobal.strokeStyle = stCo;
             canvasGlobal.lineWidth = stWi;
@@ -280,6 +289,7 @@ export class HomeComponent implements OnInit {
             canvasGlobal.fill();
             canvasGlobal.closePath();
           }
+
           lineArea.set(ID, area);
           area = null;
 
@@ -299,7 +309,7 @@ export class HomeComponent implements OnInit {
     var strwid : number = parseInt(sw.value);
     strokeWidth = strwid;
   }
-  
+
   createFunc(){
     var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
     var canvasGlobal = boardGlobal.getContext("2d")!;
@@ -309,12 +319,19 @@ export class HomeComponent implements OnInit {
       for(var shape of shapesBack){
         if(shape.type == "line"){
           if(canvasGlobal.isPointInPath(lineArea.get(shape.shapeID),e.offsetX,e.offsetY)){
-            
-            let func = prompt("Enter a Transfere Function");
+
+            let func = prompt("Enter a Transfer Function");
+            shape.func = func;
+            canvasGlobal.clearRect(0,0,1380,675);
+            for(var i = 0; i < shapesBack.length; i++){
+              this.placeElement(shapesBack[i], "");
+            }
             lineFuncs.set(draw_line.shapeID, func);
+
           }
         }
       }
+
     });
   }
 
@@ -353,7 +370,7 @@ export class HomeComponent implements OnInit {
                     stWi : 2.50,
                     shapeID : get_new_ID(),
                     order:0,
-                    func : null
+                    func : "1"
 
                     }
                     selectLine = true;
@@ -416,7 +433,8 @@ export class HomeComponent implements OnInit {
                   }
                   if(draw_line != null && (draw_line.width != 0 && draw_line.height != 0)){
                     this.placeElement(draw_line, "");
-                    let func = prompt("Enter a Transfere Function");
+                    let func = prompt("Enter a Transfer Function");
+                    draw_line.func = func;
                     lineFuncs.set(draw_line.shapeID, func);
                     shapesBack.push(draw_line);
                   }
@@ -451,7 +469,7 @@ export class HomeComponent implements OnInit {
           }
           draw_line = null;
 
-
+          canvasGlobal.clearRect(0,0,1380,675);
           for(var i = 0; i < shapesBack.length; i++){
             this.placeElement(shapesBack[i], "");
           }

@@ -15,7 +15,7 @@ import java.util.HashMap;
 @CrossOrigin("http://localhost:4200")
 
 public class ServerController {
-    
+
 
     ArrayList<HashMap<String, String[]>> newProductionNetwork = new ArrayList<>();
     @PostMapping("/generateNetwork")
