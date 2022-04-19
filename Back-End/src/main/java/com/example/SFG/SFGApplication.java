@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SFGApplication {
 
 	public static void main(String[] args) {
-//		ForwardPathsGetter getter = new ForwardPathsGetter();
-//		Tester tester = new Tester(getter);
-//		tester.test();
+		//ForwardPathsGetter getter = new ForwardPathsGetter();
+		//Test2 test2 = new Tester(getter);
+		//test2.test();
 		SpringApplication.run(SFGApplication.class, args);
 	}
 

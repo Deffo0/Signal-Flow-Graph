@@ -13,7 +13,9 @@ public class ForwardPathsGetter {
     private boolean[] visited;
     private List<String> pathGains;
     private List<String> pathSymbols;
+
     private Map<List<String>, List<String>> finalSymbolsGains;
+    private Map<List<String>, List<String>> finalloopssGains;
 
     public ForwardPathsGetter() {
         vertices = new ArrayList<>();
@@ -23,6 +25,7 @@ public class ForwardPathsGetter {
         this.pathGains = new ArrayList<>();
         this.pathSymbols = new ArrayList<>();
         this.finalSymbolsGains = new HashMap<>();
+        this.finalloopssGains = new HashMap<>();
     }
 
     public void setVertices(List<Node> vertices) {
@@ -34,7 +37,9 @@ public class ForwardPathsGetter {
 
     public void getPaths(){
         this.pathSymbols.add(vertices.get(sourceIndex).getSymbol());
+        System.out.println("source " + sourceIndex);
         dfs(this.sourceIndex);
+
         try {
             for(List<String> symbols : this.finalSymbolsGains.keySet()){
                 System.out.println("Path: " );
@@ -44,6 +49,16 @@ public class ForwardPathsGetter {
                 for(String gain: gains) System.out.println(gain + ", ");
                 System.out.println();
             }
+
+            for(List<String> symbols : this.finalloopssGains.keySet()){
+                System.out.println("Loop: " );
+                for(String symbol : symbols) System.out.println(symbol + ", ");
+                System.out.println("\nGain: ");
+                List<String> gains = this.finalloopssGains.get(symbols);
+                for(String gain: gains) System.out.println(gain + ", ");
+                System.out.println();
+            }
+
         }
         catch (Exception e){
             System.out.println("No paths");
@@ -51,8 +66,23 @@ public class ForwardPathsGetter {
 
     }
 
+
     private void dfs(int startIndex){
         if(visited[startIndex]) {
+            //There is loop
+            List<String> loopGains = new ArrayList<>();
+            List<String> loopSymbols = new ArrayList<>();
+            var top = pathSymbols.get(pathSymbols.size() - 1);
+            loopSymbols.add(top);
+            int pos1 = pathSymbols.size() - 1;
+            int pos2 = pathGains.size();
+            do{
+                pos1--;
+                pos2--;
+                loopSymbols.add(pathSymbols.get(pos1));
+                loopGains.add(pathGains.get(pos2));
+            }while(pathSymbols.get(pos1) != top);
+            finalloopssGains.put(loopSymbols, loopGains);
             this.pathGains.remove(this.pathGains.size() - 1);
             this.pathSymbols.remove(this.pathSymbols.size() - 1);
             return;
@@ -64,7 +94,7 @@ public class ForwardPathsGetter {
             this.finalSymbolsGains.put(paths, gains);
         }
         for(Node neighbour: vertices.get(startIndex).getToNeighbours().keySet()){
-            this.pathSymbols.add(neighbour.getSymbol());
+            this.pathSymbols.add( neighbour.getSymbol());
             this.pathGains.add(vertices.get(startIndex).getToNeighbours().get(neighbour));
             dfs(vertices.indexOf(neighbour));
         }
