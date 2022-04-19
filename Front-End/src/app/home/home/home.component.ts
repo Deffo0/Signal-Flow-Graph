@@ -1,8 +1,9 @@
 import { HomeService } from './home.service';
-import { productionNetworkElement } from './productionNetworkElement';
 import { Component, OnInit } from '@angular/core';
 import { interval, Observable } from 'rxjs';
 import { delay, switchMap } from 'rxjs/operators';
+import { Router, RouterLink } from '@angular/router';
+import { ResultComponent } from 'src/app/result/result.component';
 
  //container to hold all different shapes on it
 var shapesBack:shapeBack[] = [];
@@ -168,7 +169,7 @@ export class HomeComponent implements OnInit {
   }
 
   title = 'Front-End';
-  constructor(private server: HomeService) {}
+  constructor(private server: HomeService, private router :Router, private result :ResultComponent) {}
 
   playEvent : any;
   replayEvent : any;
@@ -624,8 +625,8 @@ run(){
   if(playFlag){
     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
           this.server.play().subscribe((data)=>{
-            var serv = this.server;
-
+            this.result.data = [data];
+            this.router.navigate(["/result"]);
           });
     });
   }
