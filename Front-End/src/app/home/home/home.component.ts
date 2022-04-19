@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit {
       type : "machine",
       is_filled : 1,
       stWi : 2,
-      shapeID : "machine".concat(get_new_ID()),
+      shapeID : "Machine".concat(get_new_ID()),
       order:machineCounter,
       func : null,
       }
@@ -152,7 +152,7 @@ export class HomeComponent implements OnInit {
         type : "machine",
         is_filled : 1,
         stWi : 2,
-        shapeID : "machine".concat(get_new_ID()),
+        shapeID : "Machine".concat(get_new_ID()),
         order:machineCounter,
         func : null
         }
@@ -211,10 +211,10 @@ export class HomeComponent implements OnInit {
           canvasGlobal.arc(x, y, 0.5*width, 0, 2*Math.PI);
           canvasGlobal.fill();
           canvasGlobal.font = "icon";
-          if(ID.includes("machine999999")){
+          if(ID.includes("Machine999999")){
             canvasGlobal.strokeText("R", shape.x-(shape.width/30) + 3, shape.y + 1);
 
-          }else if(ID.includes("machine999998")){
+          }else if(ID.includes("Machine999998")){
             canvasGlobal.strokeText("C", shape.x-(shape.width/30) + 3, shape.y + 1);
 
           }else{
@@ -404,16 +404,23 @@ export class HomeComponent implements OnInit {
               case "machinemachine":
 
                 if(canvasGlobal.isPointInPath( machineArea.get(shape.shapeID),e.offsetX,e.offsetY)){
-                console.log("INSIDE CASE 2");
 
                   createLineFlag = false;
                   createdLine = true;
                   selectLine = false;
                   lineButtonFlag = false;
 
+                  if(draw_line != null && (draw_line.width != 0 && draw_line.height != 0)){
+                    this.placeElement(draw_line, "");
+                    var func = prompt("Enter a Transfer Function");
+                    draw_line.func = func;
+                    lineFuncs.set(draw_line.shapeID, func);
+                    shapesBack.push(draw_line);
+                  }
+
                   if(forwardProductionNetwork.has(fromElement)){
                     if(forwardProductionNetwork.get(fromElement).indexOf(shape.shapeID) == -1){
-                      forwardProductionNetwork.get(fromElement).push(shape.shapeID)
+                      forwardProductionNetwork.get(fromElement).push(func+" "+shape.shapeID)
                     }
                     else{
                       canvasGlobal.clearRect(0,0,1380,675);
@@ -428,16 +435,10 @@ export class HomeComponent implements OnInit {
                       break;
                     }
                   }else{
-                    forwardProductionNetwork.set(fromElement, [shape.shapeID])
+                    forwardProductionNetwork.set(fromElement, [func+" "+shape.shapeID])
 
                   }
-                  if(draw_line != null && (draw_line.width != 0 && draw_line.height != 0)){
-                    this.placeElement(draw_line, "");
-                    let func = prompt("Enter a Transfer Function");
-                    draw_line.func = func;
-                    lineFuncs.set(draw_line.shapeID, func);
-                    shapesBack.push(draw_line);
-                  }
+
                   draw_line = null;
                   document.getElementById("line")!.style.backgroundColor = "transparent";
                   console.log(fromElement);
@@ -577,227 +578,63 @@ export class HomeComponent implements OnInit {
 //----------------------------------------------------------------------//
 
 
-// run(){
-//   var playFlag = true;
+run(){
+  var playFlag = true;
 
 
-//   var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
-//   var canvasGlobal = boardGlobal.getContext("2d")!;
+  var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
+  var canvasGlobal = boardGlobal.getContext("2d")!;
 
-//   console.log(forwardProductionNetwork);
+  console.log(forwardProductionNetwork);
 
-//   console.log(forwardProductionNetwork.size)
-//   var temp : string[][][][] = [];
+  console.log(forwardProductionNetwork.size)
+  var temp : string[][][][] = [];
 
-//   temp.push([]);
-//   temp.push([]);
+  temp.push([]);
+  temp.push([]);
 
-//   let ctr = 0;
+  let ctr = 0;
 
-//   forwardProductionNetwork.forEach((key, value) => {
+  forwardProductionNetwork.forEach((key, value) => {
 
-//     temp[0].push([]);
-//     temp[0][ctr].push([]);
-//     temp[0][ctr].push([]);
-//     temp[0][ctr][1] = key;
-//     temp[0][ctr][0].push(value);
-//     ctr++;
-//     console.log("Key ", key);
-//     console.log("value ", value);
+    temp[0].push([]);
+    temp[0][ctr].push([]);
+    temp[0][ctr].push([]);
+    temp[0][ctr][1] = key;
+    temp[0][ctr][0].push(value);
+    ctr++;
+    console.log("Key ", key);
+    console.log("value ", value);
 
-//   })
-//   ctr = 0;
-//   backwardProductionNetwork.forEach((key, value) => {
-//     temp[1].push([]);
-//     temp[1][ctr].push([]);
-//     temp[1][ctr].push([]);
-//     temp[1][ctr][1] = key;
-//     temp[1][ctr][0].push(value);
-//     ctr++;
-//     console.log("Key ", key);
-//     console.log("value ", value);
+  })
 
-//   })
+  if(forwardProductionNetwork.size == 0 ){
+    playFlag = false;
+  }
 
-//   if(forwardProductionNetwork.size == 0 && backwardProductionNetwork.size == 0){
-//     playFlag = false;
-//   }
+  const convMap = Object.create(null);
 
-//   backwardProductionNetwork.forEach((val : string[], key:string) => {
-//     if(!forwardProductionNetwork.get(key)){
-//       playFlag = false;
-//     }
-//   });
-//   forwardProductionNetwork.forEach((val : string[], key:string) => {
-//     if(!backwardProductionNetwork.get(key)){
-//       playFlag = false;
-//     }
-//   });
+  if(playFlag){
+    forwardProductionNetwork.forEach((val: string[], key: string) => {
+      convMap[key] = val;
+    });
+  }
 
 
+  if(playFlag){
+    this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
+          this.server.play().subscribe((data)=>{
+            var serv = this.server;
 
-//   const convMap = Object.create(null);
-//   const convMap2 = Object.create(null);
+          });
+    });
+  }
+  else{
+    console.log("NETWORK IS NOT COMPLETE");
+    alert("EACH MACHINE SHOULD BE CONNECTED TO ONE QUEUE FROM BOTH SIDES");
+  }
 
-//   if(playFlag){
-//     forwardProductionNetwork.forEach((val: string[], key: string) => {
-//       convMap[key] = val;
-//     });
-//     backwardProductionNetwork.forEach((val: string[], key: string) => {
-//       convMap2[key] = val;
-//     });
-//   }
-
-
-//   if(playFlag){
-//     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
-//       this.server.generateNetwork(JSON.stringify(convMap2)).subscribe((data)=>{
-//           this.server.play().subscribe((data)=>{
-//             var serv = this.server;
-//             var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
-//             var canvasGlobal = boardGlobal.getContext("2d")!;
-//             let scndCtr = 0;
-//             var machineServTimeCtr = 0;
-//             this.playEvent = setInterval(function(this:any){
-//               machineServTimeCtr++;
-
-//               scndCtr++;
-//               if(scndCtr == 1000){
-//                 console.log("1S");
-//               }
-//               serv.polling().subscribe((x : Object[]) => {
-
-//                 if(x != null ){
-//                   console.log(x[0]);
-//                   canvasGlobal.clearRect(0,0,1380,675);
-
-//                   let ctr = 0;
-
-//                   var machines : Machine[] = Object.assign(x[0]);
-//                   var buffers : Buffer[] = Object.assign(x[1]);
-//                   console.log(buffers.length)
-
-
-
-//                   for(let i = 0; i < machines.length; i++){
-//                     var color;
-
-//                     try{
-//                       color = machines[i].product.color;
-//                     }
-//                     catch(e){
-//                       color = "darkred"
-//                     }
-
-//                     var machineID = machines[i].machineName;
-//                     var areaMachine = machineArea.get(machineID);
-
-
-//                     for(var shape of shapesBack){
-
-//                       ctr++;
-//                       if(shape.shapeID == machineID){
-//                         areaMachine.arc(shape.x, shape.y, 0.5*shape.width, 0, 2*Math.PI);
-//                         canvasGlobal.beginPath();
-//                         canvasGlobal.strokeStyle = shape.stCo;
-//                         canvasGlobal.lineWidth = shape.stWi;
-//                         canvasGlobal.fillStyle = color;
-//                         canvasGlobal.arc(shape.x, shape.y, 0.5*shape.width, 0, 2*Math.PI);
-//                         canvasGlobal.fill();
-//                         canvasGlobal.stroke();
-//                         canvasGlobal.font = "icon";
-//                         canvasGlobal.textAlign="center";
-//                         canvasGlobal.strokeText("M "+(shape.order).toString(), shape.x-(shape.width/30) + 2, shape.y );
-//                         if(color != "darkred"){
-//                           canvasGlobal.strokeText((machines[i].serviceTime / 1000).toString(), shape.x-(shape.width/30), shape.y + shape.height - 58);
-//                         }
-//                         else{
-//                           canvasGlobal.strokeText("Ready", shape.x-(shape.width/30) + 2, shape.y + shape.height - 58);
-
-//                         }
-//                         machineArea.set(machineID, areaMachine);
-//                       }
-//                     }
-
-//                     areaMachine = null;
-//                   }
-
-//                   ctr = 0;
-
-//                   for(let i = 0; i < buffers.length; i++){
-
-//                     var bufferID = buffers[i].bufferID;
-//                     var areaBuffer = queueArea.get(bufferID);
-
-//                     console.log(bufferID);
-//                     for(var shape of shapesBack){
-//                       ctr++;
-//                       if(shape.shapeID == bufferID){
-//                         areaBuffer.rect(shape.x, shape.y, shape.width, shape.height);
-//                         canvasGlobal.strokeStyle = shape.stCo;
-//                         canvasGlobal.lineWidth = shape.stWi;
-//                         canvasGlobal.fillStyle = "rgba(0,100,0, 0.5)"
-//                         canvasGlobal.beginPath();
-//                         canvasGlobal.rect(shape.x, shape.y, shape.width, shape.height)
-//                         canvasGlobal.fill();
-//                         canvasGlobal.stroke();
-//                         canvasGlobal.font = "icon";
-//                         canvasGlobal.textAlign="center";
-
-//                         canvasGlobal.strokeText("Q"+(shape.order).toString(), shape.x+(shape.width/2), shape.y+(shape.height/8) + 8);
-
-//                         canvasGlobal.strokeText(buffers[i].size.toString(), shape.x+(shape.width/2), shape.y+(shape.height/2)+8);
-
-//                         queueArea.set(bufferID, areaBuffer);
-//                       }
-
-//                     }
-//                     areaBuffer = null;
-//                   }
-//                 }
-
-//                 for(var shape of shapesBack){
-//                   if(shape.type == "line"){
-//                     var lineArea = new Path2D();
-//                     lineArea.moveTo(shape.x, shape.y);
-//                     lineArea.lineTo(shape.width, shape.height);
-//                     lineArea.closePath;
-//                     canvasGlobal.beginPath();
-//                     canvasGlobal.strokeStyle = shape.stCo;
-//                     canvasGlobal.lineWidth = shape.stWi;
-//                     canvasGlobal.moveTo(shape.x, shape.y);
-//                     canvasGlobal.lineTo(shape.width, shape.height);
-//                     canvasGlobal.closePath();
-//                     canvasGlobal.stroke();
-//                     var angle=Math.PI+Math.atan2(shape.height-shape.y,shape.width-shape.x);
-//                     var angle1=angle+Math.PI/6;
-//                     var angle2=angle-Math.PI/6;
-//                     canvasGlobal.beginPath();
-//                     canvasGlobal.strokeStyle = shape.stCo;
-//                     canvasGlobal.lineWidth = shape.stWi;
-//                     canvasGlobal.fillStyle = "white"
-//                     canvasGlobal.moveTo(shape.width,shape.height);
-//                     canvasGlobal.arc(shape.width,shape.height,20,angle1,angle2,true);
-//                     canvasGlobal.lineTo(shape.width,shape.height);
-//                     canvasGlobal.fill();
-//                     canvasGlobal.closePath();
-//                     lineArea = null;
-//                   }
-
-//                 }
-
-//               });
-//             }, 1)
-//           });
-//       });
-//     });
-//   }
-//   else{
-//     console.log("NETWORK IS NOT COMPLETE");
-//     alert("EACH MACHINE SHOULD BE CONNECTED TO ONE QUEUE FROM BOTH SIDES");
-//   }
-
-// }
+}
 //----------------------------------------------------------------------//
 // replay(){
 //   clearInterval(this.playEvent);
