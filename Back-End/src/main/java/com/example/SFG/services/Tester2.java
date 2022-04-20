@@ -1,18 +1,15 @@
 package com.example.SFG.services;
-import org.paukov.combinatorics3.Generator;
 
 import com.example.SFG.model.Node;
-import com.example.SFG.services.ForwardPathsGetter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Tester2 {
-    private ForwardPathsGetter pathsGetter;
+    private ForwardPathsAndLoopsGetter pathsGetter;
 
     @Autowired
-    public Tester2(ForwardPathsGetter pathsGetter) {
+    public Tester2(ForwardPathsAndLoopsGetter pathsGetter) {
         this.pathsGetter = pathsGetter;
     }
 
@@ -68,15 +65,6 @@ public class Tester2 {
         pathsGetter.getPaths();
 
         System.out.println(pathsGetter.getNonTouchingLoops());
-
-
-
-
-
-
-
-
-
 
     }
 

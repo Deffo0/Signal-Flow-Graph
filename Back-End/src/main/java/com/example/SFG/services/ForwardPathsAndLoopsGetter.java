@@ -3,13 +3,12 @@ package com.example.SFG.services;
 import com.example.SFG.model.Node;
 import org.paukov.combinatorics3.Generator;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ForwardPathsGetter {
+public class ForwardPathsAndLoopsGetter {
     private List<Node> vertices;
     private int sourceIndex;
     private int sinkIndex;
@@ -20,7 +19,7 @@ public class ForwardPathsGetter {
     private Map<List<String>, List<String>> finalSymbolsGains;
     private Map<List<String>, List<String>> finalloopssGains;
 
-    public ForwardPathsGetter() {
+    public ForwardPathsAndLoopsGetter() {
         vertices = new ArrayList<>();
         sinkIndex = 0;
         sourceIndex = 0;

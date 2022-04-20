@@ -1,7 +1,6 @@
 package com.example.SFG.services;
 
 import com.example.SFG.model.Node;
-import com.example.SFG.services.ForwardPathsGetter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -9,10 +8,10 @@ import java.util.HashMap;
 import java.util.*;
 
 public class Test2 {
-    private ForwardPathsGetter pathsGetter;
+    private ForwardPathsAndLoopsGetter pathsGetter;
 
     @Autowired
-    public Test2(ForwardPathsGetter pathsGetter) {
+    public Test2(ForwardPathsAndLoopsGetter pathsGetter) {
         this.pathsGetter = pathsGetter;
     }
 

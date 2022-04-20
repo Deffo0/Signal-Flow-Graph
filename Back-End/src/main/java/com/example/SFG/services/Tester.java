@@ -11,10 +11,10 @@ import java.util.Map;
 
 @Service
 public class Tester {
-    private ForwardPathsGetter pathsGetter;
+    private ForwardPathsAndLoopsGetter pathsGetter;
 
     @Autowired
-    public Tester(ForwardPathsGetter pathsGetter) {
+    public Tester(ForwardPathsAndLoopsGetter pathsGetter) {
         this.pathsGetter = pathsGetter;
     }
 
