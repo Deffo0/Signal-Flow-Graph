@@ -31,8 +31,8 @@ public class NetworkOptimizer {
                     String[] gain_neighbour = s.split(" Machine", 2);
                     gain_neighbour[1] = "Machine" + gain_neighbour[1];
                     neighbour = getNodeFromSymbol(gain_neighbour[1]);
-                    if(toNeighbours.get(neighbour) == null || toNeighbours.get(neighbour).isEmpty() ||
-                        toNeighbours.get(neighbour).equalsIgnoreCase("undefined"))
+                    if(gain_neighbour[0].equalsIgnoreCase("undefined")) continue;
+                    if(toNeighbours.get(neighbour) == null || toNeighbours.get(neighbour).isEmpty() )
                         toNeighbours.put(neighbour, gain_neighbour[0]);
                     else
                         toNeighbours.put(neighbour, toNeighbours.get(neighbour) + " + " + gain_neighbour[0]);
