@@ -9,18 +9,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResultComponent } from './result/result.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     HomeComponent,
-      ResultComponent
-   ],
+    ResultComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
 
   ],
-  providers: [HomeService],
+  providers: [
+    HomeService,
+    ResultComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

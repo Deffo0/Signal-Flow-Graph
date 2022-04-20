@@ -626,7 +626,7 @@ run(){
     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
           this.server.play().subscribe((data)=>{
             this.result.data = [data];
-            this.router.navigate(["/result"]);
+            this.router.navigate(['/result']);
           });
     });
   }
