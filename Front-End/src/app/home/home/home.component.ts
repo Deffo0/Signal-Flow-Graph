@@ -636,144 +636,16 @@ run(){
   }
 
 }
-//----------------------------------------------------------------------//
-// replay(){
-//   clearInterval(this.playEvent);
-//     var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
-//     var canvasGlobal = boardGlobal.getContext("2d")!;
-//     this.stopReplay = false;
-//     this.server.replay().subscribe((snapshots : Object[][]) => {
-//       console.log(snapshots);
-//       let replayCtr = 0;
-//        this.replayEvent = setInterval(function(){
-//         if(snapshots[replayCtr] != null){
-//           canvasGlobal.clearRect(0,0,1380,675);
 
-//           let ctr = 0;
-
-//           var machines : Machine[] = Object.assign(snapshots[replayCtr][0]);
-//           var buffers : Buffer[] = Object.assign(snapshots[replayCtr][1]);
-//           console.log(buffers.length)
+  stop(){
+    this.server.stop().subscribe((data:string)=>{
+      console.log(data)
+      clearInterval(this.playEvent);
+      clearInterval(this.replayEvent);
 
 
-
-//           for(let i = 0; i < machines.length; i++){
-//             var color;
-
-//             try{
-//               color = machines[i].product.color;
-//             }
-//             catch(e){
-//               color = "darkred"
-//             }
-//             var machineID = machines[i].machineName;
-//             var areaMachine = machineArea.get(machineID);
-
-
-//             for(var shape of shapesBack){
-
-//               ctr++;
-//               if(shape.shapeID == machineID){
-//                 areaMachine.arc(shape.x, shape.y, 0.5*shape.width, 0, 2*Math.PI);
-//                 canvasGlobal.beginPath();
-//                 canvasGlobal.strokeStyle = shape.stCo;
-//                 canvasGlobal.lineWidth = shape.stWi;
-//                 canvasGlobal.fillStyle = color;
-//                 canvasGlobal.arc(shape.x, shape.y, 0.5*shape.width, 0, 2*Math.PI);
-//                 canvasGlobal.fill();
-//                 canvasGlobal.stroke();
-//                 canvasGlobal.font = "icon";
-//                 canvasGlobal.textAlign="center";
-//                 canvasGlobal.strokeText("M "+(shape.order).toString(), shape.x-(shape.width/30) + 2, shape.y );
-//                 if(color != "darkred"){
-//                   canvasGlobal.strokeText((machines[i].serviceTime / 1000).toString(), shape.x-(shape.width/30), shape.y + shape.height - 58);
-//                 }
-//                 else{
-//                   canvasGlobal.strokeText("Ready", shape.x-(shape.width/30) + 2, shape.y + shape.height - 58);
-
-//                 }
-//                 machineArea.set(machineID, areaMachine);
-//               }
-//             }
-
-//             areaMachine = null;
-//           }
-//           ctr = 0;
-//           for(let i = 0; i < buffers.length; i++){
-
-//             var bufferID = buffers[i].bufferID;
-//             var areaBuffer = queueArea.get(bufferID);
-
-//             console.log(bufferID);
-//             for(var shape of shapesBack){
-//               ctr++;
-//               if(shape.shapeID == bufferID){
-//                 areaBuffer.rect(shape.x, shape.y, shape.width, shape.height);
-//                 canvasGlobal.strokeStyle = shape.stCo;
-//                 canvasGlobal.lineWidth = shape.stWi;
-//                 canvasGlobal.fillStyle = "rgb(0,100,0)"
-//                 canvasGlobal.beginPath();
-//                 canvasGlobal.rect(shape.x, shape.y, shape.width, shape.height)
-//                 canvasGlobal.fill();
-//                 canvasGlobal.stroke();
-//                 canvasGlobal.font = "icon";
-//                 canvasGlobal.textAlign="center";
-//                 canvasGlobal.strokeText("Q"+(shape.order).toString(), shape.x+(shape.width/2), shape.y+(shape.height/8) + 8);
-//                 canvasGlobal.strokeText(buffers[i].size.toString(), shape.x+(shape.width/2), shape.y+(shape.height/2)+8);
-//                 queueArea.set(bufferID, areaBuffer);
-//               }
-
-//             }
-//             areaBuffer = null;
-//           }
-//         }
-
-//         for(var shape of shapesBack){
-//           if(shape.type == "line"){
-//             var lineArea = new Path2D();
-//             lineArea.moveTo(shape.x, shape.y);
-//             lineArea.lineTo(shape.width, shape.height);
-//             lineArea.closePath;
-//             canvasGlobal.beginPath();
-//             canvasGlobal.strokeStyle = shape.stCo;
-//             canvasGlobal.lineWidth = shape.stWi;
-//             canvasGlobal.moveTo(shape.x, shape.y);
-//             canvasGlobal.lineTo(shape.width, shape.height);
-//             canvasGlobal.closePath();
-//             canvasGlobal.stroke();
-//             var angle=Math.PI+Math.atan2(shape.height-shape.y,shape.width-shape.x);
-//             var angle1=angle+Math.PI/6;
-//             var angle2=angle-Math.PI/6;
-//             canvasGlobal.beginPath();
-//             canvasGlobal.strokeStyle = shape.stCo;
-//             canvasGlobal.lineWidth = shape.stWi;
-//             canvasGlobal.fillStyle = "white"
-//             canvasGlobal.moveTo(shape.width,shape.height);
-//             canvasGlobal.arc(shape.width,shape.height,20,angle1,angle2,true);
-//             canvasGlobal.lineTo(shape.width,shape.height);
-//             canvasGlobal.fill();
-//             canvasGlobal.closePath();
-//             lineArea = null;
-//           }
-//         }
-//         replayCtr++;
-//        }, 1)
-
-
-//     });
-
-// }
-
-//----------------------------------------------------------------------//
-stop(){
-  this.server.stop().subscribe((data:string)=>{
-    console.log(data)
-    clearInterval(this.playEvent);
-    clearInterval(this.replayEvent);
-
-
-  });
-}
+    });
+  }
 
 //----------------------------------------------------------------------//
 

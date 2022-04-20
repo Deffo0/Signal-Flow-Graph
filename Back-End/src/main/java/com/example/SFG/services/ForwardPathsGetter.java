@@ -1,9 +1,12 @@
 package com.example.SFG.services;
 
 import com.example.SFG.model.Node;
+import org.paukov.combinatorics3.Generator;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ForwardPathsGetter {
@@ -103,5 +106,63 @@ public class ForwardPathsGetter {
             this.pathGains.remove(this.pathGains.size() - 1);
             this.pathSymbols.remove(this.pathSymbols.size() - 1);
         }
+    }
+
+    public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(){
+
+
+        Map<String, List<String>> loops = new HashMap<>();
+        List<String> loopsNames = new ArrayList<>();
+        List<List<List<String>>> loopSubsets = new ArrayList<>();
+
+        int ctr = 0;
+        for(List<String> key : this.finalloopssGains.keySet()){
+            loops.put("L".concat(Integer.toString(ctr + 1)), key);
+            loopsNames.add("L".concat(Integer.toString(ctr + 1)));
+            ctr++;
+        }
+
+
+
+        for(int i = 1; i <= 5; i++){
+            loopSubsets.add(Generator.combination(loopsNames).simple(i).stream().collect(Collectors.toList()));
+        }
+
+        List<List<String>> nonTouchLoop = new ArrayList<>();
+        for(List<List<String>> listSubset : loopSubsets){
+            for(List<String> subset : listSubset){
+                Set<String> subSetsNodes = new HashSet<>();
+                boolean nonTouch = true;
+                for(String loop : subset){
+                    for(int i = 0; i < loops.get(loop).size() - 1; i++){
+                        nonTouch = subSetsNodes.add(loops.get(loop).get(i));
+                        if(!nonTouch){
+                            break;
+                        }
+                    }
+                    if(!nonTouch){
+                        break;
+                    }
+                }
+                if(nonTouch){
+                    nonTouchLoop.add(subset);
+                }
+            }
+        }
+        Map<Integer, List<List<List<String>>>> nonTouchGains = new HashMap<>();
+        for(List<String> loopSubset : nonTouchLoop){
+
+            System.out.println(loopSubset);
+
+            nonTouchGains.putIfAbsent(loopSubset.size(), new ArrayList<>());
+            nonTouchGains.get(loopSubset.size()).add(new ArrayList<>());
+
+            for(String loop : loopSubset){
+                nonTouchGains.get(loopSubset.size()).get(nonTouchGains.get(loopSubset.size()).size() - 1).add(this.finalloopssGains.get(loops.get(loop)));
+
+            }
+
+        }
+        return nonTouchGains;
     }
 }
