@@ -131,7 +131,7 @@ export class HomeComponent implements OnInit {
       type : "machine",
       is_filled : 1,
       stWi : 2,
-      shapeID : "Machine".concat(get_new_ID()),
+      shapeID : "Machine"+machineCounter,
       order:machineCounter,
       func : null,
       }
@@ -153,7 +153,7 @@ export class HomeComponent implements OnInit {
         type : "machine",
         is_filled : 1,
         stWi : 2,
-        shapeID : "Machine".concat(get_new_ID()),
+        shapeID : "Machine"+machineCounter,
         order:machineCounter,
         func : null
         }
@@ -212,10 +212,10 @@ export class HomeComponent implements OnInit {
           canvasGlobal.arc(x, y, 0.5*width, 0, 2*Math.PI);
           canvasGlobal.fill();
           canvasGlobal.font = "icon";
-          if(ID.includes("Machine999999")){
+          if(ID.includes("Machine0")){
             canvasGlobal.strokeText("R", shape.x-(shape.width/30) + 3, shape.y + 1);
 
-          }else if(ID.includes("Machine999998")){
+          }else if(ID.includes("Machine1")){
             canvasGlobal.strokeText("C", shape.x-(shape.width/30) + 3, shape.y + 1);
 
           }else{
@@ -420,21 +420,8 @@ export class HomeComponent implements OnInit {
                   }
 
                   if(forwardProductionNetwork.has(fromElement)){
-                    if(forwardProductionNetwork.get(fromElement).indexOf(shape.shapeID) == -1){
-                      forwardProductionNetwork.get(fromElement).push(func+" "+shape.shapeID)
-                    }
-                    else{
-                      canvasGlobal.clearRect(0,0,1380,675);
-                      createLineFlag =false;
-                      createdLine = true;
-                      selectLine = false;
-                      lineButtonFlag = false;
-                      document.getElementById("line")!.style.backgroundColor = "transparent"
-                      for(var i = 0; i < shapesBack.length; i++){
-                        this.placeElement(shapesBack[i], "");
-                      }
-                      break;
-                    }
+                    forwardProductionNetwork.get(fromElement).push(func+" "+shape.shapeID)
+
                   }else{
                     forwardProductionNetwork.set(fromElement, [func+" "+shape.shapeID])
 
@@ -522,7 +509,7 @@ export class HomeComponent implements OnInit {
           fiCo : "white",
           is_filled : 1,
           stWi : 2,
-          shapeID : "Machine".concat(get_new_ID()),
+          shapeID : "Machine"+machineCounter,
           order :machineCounter,
           func: null
 
