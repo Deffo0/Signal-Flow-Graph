@@ -1,59 +1,50 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<body>
-      <section >
-        <div class="hero" id="about">
-            <div class="hero-description">
-              <div class="hero-text">
-                <h1 class="hero-title">Adding Fun to your Life</h1>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, impedit quo. Officia nisi corrupti iste asperiores accusamus quisquam quod perspiciatis vitae? Esse eum molestiae ab quasi omnis quidem officia eaque.
-                </p>
-
-              </div>
-            </div>
+  <body>
+      <h2 class="title" id="games">Results</h2>
+      <div class="games">
+        <div class="game-list">
+          <h3>Forward Paths...P1..P2..etc</h3>
+          <hr>
+          <br>
+          <tr *ngFor="let equ of data[0]">
+            <td>• {{equ}} </td>
+          </tr>
         </div>
-      </section>
-      <main style="padding-bottom:40px ;">
-        <h2 class="title" id="games">List of Games</h2>
-        <div class="games">
-          <div class="game-list">
-            <img src="img/playstation-brands.svg" alt="playstation-brands" style="width:100px; height: 100px;"/ >
-            <h3>Playstation</h3>
-            <p></p>
-          </div>
-          <div class="game-list">
-            <img src="img/pacman.svg" alt="pacman" style="width:100px; height: 100px;"/>
-            <h3>Pacman</h3>
-            <p></p>
-          </div>
-          <div class="game-list">
-            <img src="img/spider.svg" alt="spiderman" style="width:100px; height: 100px;"/>
-            <h3>Spiderman</h3>
-            <p></p>
-          </div>
-          <div class="game-list">
-            <img src="img/monster.svg" alt="monster" style="width:100px; height: 100px;"/>
-            <h3>Monster</h3>
-            <p></p>
-          </div>
-          <div class="game-list">
-            <img src="img/joker.svg" alt="joker" style="width:100px; height: 100px;"/ >
-            <h3>Joker</h3>
-            <p></p>
-          </div>
-          <div class="game-list">
-            <img src="img/halloween.svg" alt="halloween" style="width:100px; height: 100px;"/>
-            <h3>Halloween</h3>
-            <p></p>
-          </div>
-
-
+        <div class="game-list" >
+          <h3>Individual Loops</h3>
+          <hr>
+          <br>
+          <tr *ngFor="let equ of data[1]">
+            <td>• {{equ}} </td>
+          </tr>
         </div>
-        <div class="store" id="shop">
-        <h2 class="title">Our Store</h2>
+        <div class="game-list">
+          <h3>Non-touching Loops</h3>
+          <hr>
+          <br>
+          <tr *ngFor="let equ of data[2]">
+            <td>• {{equ}} </td>
+          </tr>
+        </div>
+        <div class="game-list">
+          <h3>Δ1..Δ2..Δ3...etc</h3>
+          <hr>
+          <br>
+          <tr *ngFor="let equ of data[3]">
+            <td>• {{equ}} </td>
+          </tr>
+        </div>
+        <div class="game-list">
+          <h3>Overall TF</h3>
+          <hr>
+          <br>
+          <tr *ngFor="let equ of data[4]">
+            <td>• {{equ}} </td>
+          </tr>
+        </div>
+      </div>
+  </body>
 
-        <div class="game-store">
 
-</body>
-</html> -->
+</html>

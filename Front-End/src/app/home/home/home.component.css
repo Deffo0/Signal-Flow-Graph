@@ -4,9 +4,11 @@
   left: 0px;
   width: 100%;
   height: 100%;
-  background: #000000;
+  background-color: rgb(3, 3, 20);
+
+  /* background: #000000;
   background: -webkit-linear-gradient(to right, #434343, #000000);
-  background: linear-gradient(to right, #434343, #000000);
+  background: linear-gradient(to right, #434343, #000000); */
 }
 .vtool_bar{
   position: absolute;
@@ -16,15 +18,16 @@
   align-items: center;
   background-color: rgb(24, 25, 26);
   width: 110px;
-  height: 650px;
+  height: 654px;
   left: 0px;
-  top: 62px;
+  top: 65px;
   border-radius: 10px;
   border-color:transparent;
+
 }
 .vtool_bar button{
   width: 76px;
-  height: 47px;
+  height: 46px;
   border-radius: 10px;
   background-color:transparent;
   border-color: transparent;

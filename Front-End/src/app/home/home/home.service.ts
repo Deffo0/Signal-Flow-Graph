@@ -9,8 +9,8 @@ export class HomeService {
     return this.http.post("http://localhost:8080/generateNetwork", productionNetwork,{responseType:"text"})
   }
 
-  public play():Observable<string>{
-    return this.http.get("http://localhost:8080/play", {responseType:"text"})
+  public play():Observable<string[][]>{
+    return this.http.get<string[][]>("http://localhost:8080/play")
   }
 
   public polling() :Observable<Object[]> {

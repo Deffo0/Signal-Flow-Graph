@@ -119,7 +119,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     var start : shapeBack;
     var end : shapeBack;
-    this.createFunc();
 
     start={
       x : 25,
@@ -219,7 +218,7 @@ export class HomeComponent implements OnInit {
             canvasGlobal.strokeText("C", shape.x-(shape.width/30) + 3, shape.y + 1);
 
           }else{
-            canvasGlobal.strokeText((order).toString(), shape.x-(shape.width/30) + 3, shape.y + 1);
+            canvasGlobal.strokeText((order-1).toString(), shape.x-(shape.width/30) + 3, shape.y + 1);
 
           }
           canvasGlobal.textAlign="center";
@@ -311,30 +310,7 @@ export class HomeComponent implements OnInit {
     strokeWidth = strwid;
   }
 
-  createFunc(){
-    var boardGlobal = (<HTMLCanvasElement>document.getElementById("board"));
-    var canvasGlobal = boardGlobal.getContext("2d")!;
 
-
-    boardGlobal.addEventListener("mousedown", e => {
-      for(var shape of shapesBack){
-        if(shape.type == "line"){
-          if(canvasGlobal.isPointInPath(lineArea.get(shape.shapeID),e.offsetX,e.offsetY)){
-
-            let func = prompt("Enter a Transfer Function");
-            shape.func = func;
-            canvasGlobal.clearRect(0,0,1380,675);
-            for(var i = 0; i < shapesBack.length; i++){
-              this.placeElement(shapesBack[i], "");
-            }
-            lineFuncs.set(draw_line.shapeID, func);
-
-          }
-        }
-      }
-
-    });
-  }
 
 //----------------------------------------------------------------------//
     createLine(){
@@ -612,7 +588,7 @@ run(){
   if(playFlag){
     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
           this.server.play().subscribe((data)=>{
-            this.result.data = [data];
+            this.result.data = data;
             this.router.navigate(['/result']);
           });
     });
