@@ -19,6 +19,8 @@ public class ForwardPathsAndLoopsGetter {
     private Map<List<String>, List<String>> finalSymbolsGains;
     private Map<List<String>, List<String>> finalloopssGains;
 
+    boolean isNumeric;
+
     public ForwardPathsAndLoopsGetter() {
         vertices = new ArrayList<>();
         sinkIndex = 0;
@@ -28,11 +30,17 @@ public class ForwardPathsAndLoopsGetter {
         this.pathSymbols = new ArrayList<>();
         this.finalSymbolsGains = new HashMap<>();
         this.finalloopssGains = new HashMap<>();
+        this.isNumeric = true;
     }
 
     public void setVertices(List<Node> vertices) {
         this.vertices = vertices;
         visited = new boolean[vertices.size()];
+        for(Node node: vertices){
+            if(!isInteger(node.getSymbol())){
+                isNumeric = false;
+            }
+        }
     }
     public void setSourceIndex(int sourceIndex) {this.sourceIndex = sourceIndex;}
     public void setSinkIndex(int sinkIndex) {this.sinkIndex = sinkIndex;}
@@ -107,7 +115,11 @@ public class ForwardPathsAndLoopsGetter {
         }
     }
 
-    public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(){
+    public Map<Integer, List<List<List<String>>>> getNonTouchingLoops() {
+        return getNonTouchingLoops(this.finalloopssGains);
+    }
+
+    public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(Map<List<String>, List<String>> finalloopssGains){
 
 
         Map<String, List<String>> loops = new HashMap<>();
@@ -115,7 +127,7 @@ public class ForwardPathsAndLoopsGetter {
         List<List<List<String>>> loopSubsets = new ArrayList<>();
 
         int ctr = 0;
-        for(List<String> key : this.finalloopssGains.keySet()){
+        for(List<String> key : finalloopssGains.keySet()){
             loops.put("L".concat(Integer.toString(ctr + 1)), key);
             loopsNames.add("L".concat(Integer.toString(ctr + 1)));
             ctr++;
@@ -157,11 +169,119 @@ public class ForwardPathsAndLoopsGetter {
             nonTouchGains.get(loopSubset.size()).add(new ArrayList<>());
 
             for(String loop : loopSubset){
-                nonTouchGains.get(loopSubset.size()).get(nonTouchGains.get(loopSubset.size()).size() - 1).add(this.finalloopssGains.get(loops.get(loop)));
+                nonTouchGains.get(loopSubset.size()).get(nonTouchGains.get(loopSubset.size()).size() - 1).add(finalloopssGains.get(loops.get(loop)));
 
             }
 
         }
         return nonTouchGains;
     }
+
+    public int findMultiplication(List<String> arr){
+        int result = 1;
+        for(String str: arr){
+            result *= Integer.parseInt(str);
+        }
+        return result;
+    }
+
+    private boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
+    }
+
+    public String calcDelta(){
+        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
+        int sign = 1;
+        String delta = "1";
+        List<List<String>> loopsGains = new ArrayList<>();
+        for(List<List<List<String>>> type_i_nonTouching_loops: nonToucingGains.values()){
+            List<String> loops_type_i_gains = new ArrayList<>();
+            for(List<List<String>> set_of_loops: type_i_nonTouching_loops){
+                String Multiplication = "";
+                if(isNumeric){
+                    int multiplication = 1;
+                    for(List<String> loop: set_of_loops){
+                        multiplication *= Integer.parseInt(calcGain(loop));
+                    }
+                    Multiplication = String.valueOf(multiplication);
+                }else{
+                    for(List<String> loop: set_of_loops){
+                        Multiplication.concat("*");
+                        Multiplication.concat(calcGain(loop));
+                    }
+                }
+                loops_type_i_gains.add(Multiplication);
+            }
+            loopsGains.add(loops_type_i_gains);
+        }
+        for(List<String> type: loopsGains){
+            if(sign == 1)
+                delta.concat("+(");
+            else
+                delta.concat("-(");
+            for(String term: type){
+                delta.concat(term);
+                delta.concat("+");
+            }
+            delta = delta.substring(0, delta.length() - 1);
+            delta.concat(")");
+        }
+        return delta;
+    }
+
+
+    public String getTransferFunction(){
+        List<String> Ps = new ArrayList<>();
+        List<String> deltas = new ArrayList<>();
+        String delta;
+        Ps = calcPs();
+        delta = calcDelta();
+        //deltas = calcDeltas();
+        return null;
+    }
+
+    public String calcGain(List<String> path){
+        String gain;
+        if(isNumeric) {
+            int result = findMultiplication(path);
+            gain = String.valueOf(result);
+        }
+        else{
+            String TF;
+            int intPart = 1;
+            String strPart = "";
+            for(var symbol: path){
+                if(isInteger(symbol))
+                    intPart *= Integer.parseInt(symbol);
+                else
+                    strPart.concat(symbol);
+
+            }
+            gain = String.valueOf((Integer)intPart).concat(strPart);
+        }
+        return gain;
+    }
+
+    public List<String> calcPs(){
+        List<String> Ps = new ArrayList<>();
+        if(isNumeric)
+            Ps = finalSymbolsGains.values().stream().map(i -> String.valueOf(findMultiplication(i))).collect(Collectors.toList());
+        else{
+            int intPart = 1;
+            String strPart = "";
+            for(var path: finalSymbolsGains.values()){
+                Ps.add(calcGain(path));
+            }
+        }
+        return Ps;
+    }
+
 }
