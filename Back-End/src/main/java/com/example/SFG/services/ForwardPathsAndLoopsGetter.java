@@ -17,7 +17,7 @@ public class ForwardPathsAndLoopsGetter {
     private List<String> pathSymbols;
 
     private Map<List<String>, List<String>> finalSymbolsGains;
-    private Map<List<String>, List<String>> finalloopssGains;
+    private Map<List<String>, List<String>> finalloopsGains;
 
     boolean isNumeric;
 
@@ -29,8 +29,16 @@ public class ForwardPathsAndLoopsGetter {
         this.pathGains = new ArrayList<>();
         this.pathSymbols = new ArrayList<>();
         this.finalSymbolsGains = new HashMap<>();
-        this.finalloopssGains = new HashMap<>();
+        this.finalloopsGains = new HashMap<>();
         this.isNumeric = true;
+    }
+
+    public Map<List<String>, List<String>> getFinalloopsGains() {
+        return finalloopsGains;
+    }
+
+    public Map<List<String>, List<String>> getFinalSymbolsGains() {
+        return finalSymbolsGains;
     }
 
     public void setVertices(List<Node> vertices) {
@@ -60,11 +68,11 @@ public class ForwardPathsAndLoopsGetter {
                 System.out.println();
             }
 
-            for(List<String> symbols : this.finalloopssGains.keySet()){
+            for(List<String> symbols : this.finalloopsGains.keySet()){
                 System.out.println("Loop: " );
                 for(String symbol : symbols) System.out.println(symbol + ", ");
                 System.out.println("\nGain: ");
-                List<String> gains = this.finalloopssGains.get(symbols);
+                List<String> gains = this.finalloopsGains.get(symbols);
                 for(String gain: gains) System.out.println(gain + ", ");
                 System.out.println();
             }
@@ -92,7 +100,7 @@ public class ForwardPathsAndLoopsGetter {
                 loopSymbols.add(pathSymbols.get(pos1));
                 loopGains.add(pathGains.get(pos2));
             }while(pathSymbols.get(pos1) != top);
-            finalloopssGains.put(loopSymbols, loopGains);
+            finalloopsGains.put(loopSymbols, loopGains);
             this.pathGains.remove(this.pathGains.size() - 1);
             this.pathSymbols.remove(this.pathSymbols.size() - 1);
             return;
@@ -116,7 +124,7 @@ public class ForwardPathsAndLoopsGetter {
     }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops() {
-        return getNonTouchingLoops(this.finalloopssGains);
+        return getNonTouchingLoops(this.finalloopsGains);
     }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(Map<List<String>, List<String>> finalloopssGains){
@@ -200,7 +208,7 @@ public class ForwardPathsAndLoopsGetter {
 
 
     public String calcDelta(){
-        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
+        var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
         int sign = -1;
         String delta = "1";
         List<List<String>> loopsGains = new ArrayList<>();
@@ -253,7 +261,7 @@ public class ForwardPathsAndLoopsGetter {
         return result;
     }
     public List<String> calcDeltas(){
-        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
+        var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
         List<String> deltas = new ArrayList<>();
         for(List<String> path : this.finalSymbolsGains.values()) {
             int sign = -1;
@@ -322,12 +330,17 @@ public class ForwardPathsAndLoopsGetter {
         String TF = "( ";
         for(int i=0; i<Ps.size(); i++){
             TF = TF.concat(Ps.get(i));
-            TF = TF.concat(" * (");
-            TF = TF.concat(deltas.get(i));
-            TF = TF.concat(")");
+            if(deltas.get(i) != "1" && deltas.get(i) != "1-" && deltas.get(i) != "" && deltas.get(i) != " ") {
+                TF = TF.concat(" * ");
+                TF = TF.concat("(");
+                TF = TF.concat(deltas.get(i));
+                TF = TF.concat(")");
+            }
+
         }
         TF = TF.concat(" )/");
         TF = TF.concat(delta);
+        System.out.println("TRANSFER FUNCTION: \n" + TF);
         return TF;
     }
 
