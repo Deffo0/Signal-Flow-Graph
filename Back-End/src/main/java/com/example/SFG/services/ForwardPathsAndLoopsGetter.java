@@ -17,17 +17,9 @@ public class ForwardPathsAndLoopsGetter {
     private List<String> pathSymbols;
 
     private Map<List<String>, List<String>> finalSymbolsGains;
-    private Map<List<String>, List<String>> finalloopsGains;
+    private Map<List<String>, List<String>> finalloopssGains;
 
     boolean isNumeric;
-
-    public Map<List<String>, List<String>> getFinalloopsGains() {
-        return finalloopsGains;
-    }
-
-    public Map<List<String>, List<String>> getFinalSymbolsGains() {
-        return finalSymbolsGains;
-    }
 
     public ForwardPathsAndLoopsGetter() {
         vertices = new ArrayList<>();
@@ -37,7 +29,7 @@ public class ForwardPathsAndLoopsGetter {
         this.pathGains = new ArrayList<>();
         this.pathSymbols = new ArrayList<>();
         this.finalSymbolsGains = new HashMap<>();
-        this.finalloopsGains = new HashMap<>();
+        this.finalloopssGains = new HashMap<>();
         this.isNumeric = true;
     }
 
@@ -68,11 +60,11 @@ public class ForwardPathsAndLoopsGetter {
                 System.out.println();
             }
 
-            for(List<String> symbols : this.finalloopsGains.keySet()){
+            for(List<String> symbols : this.finalloopssGains.keySet()){
                 System.out.println("Loop: " );
                 for(String symbol : symbols) System.out.println(symbol + ", ");
                 System.out.println("\nGain: ");
-                List<String> gains = this.finalloopsGains.get(symbols);
+                List<String> gains = this.finalloopssGains.get(symbols);
                 for(String gain: gains) System.out.println(gain + ", ");
                 System.out.println();
             }
@@ -100,7 +92,7 @@ public class ForwardPathsAndLoopsGetter {
                 loopSymbols.add(pathSymbols.get(pos1));
                 loopGains.add(pathGains.get(pos2));
             }while(pathSymbols.get(pos1) != top);
-            finalloopsGains.put(loopSymbols, loopGains);
+            finalloopssGains.put(loopSymbols, loopGains);
             this.pathGains.remove(this.pathGains.size() - 1);
             this.pathSymbols.remove(this.pathSymbols.size() - 1);
             return;
@@ -124,7 +116,7 @@ public class ForwardPathsAndLoopsGetter {
     }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops() {
-        return getNonTouchingLoops(this.finalloopsGains);
+        return getNonTouchingLoops(this.finalloopssGains);
     }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(Map<List<String>, List<String>> finalloopssGains){
@@ -208,7 +200,7 @@ public class ForwardPathsAndLoopsGetter {
 
 
     public String calcDelta(){
-        var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
+        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
         int sign = -1;
         String delta = "1";
         List<List<String>> loopsGains = new ArrayList<>();
@@ -261,7 +253,7 @@ public class ForwardPathsAndLoopsGetter {
         return result;
     }
     public List<String> calcDeltas(){
-        var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
+        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
         List<String> deltas = new ArrayList<>();
         for(List<String> path : this.finalSymbolsGains.values()) {
             int sign = -1;
