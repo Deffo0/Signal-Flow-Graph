@@ -37,6 +37,7 @@ public class ServerController {
         this.optimizer = optimizer;
     }
 
+    //Function
     public String[] convertToArray(ArrayList<String> list){
         String[] arr = new String[list.size()];
         for(int i=0; i<list.size(); i++){
