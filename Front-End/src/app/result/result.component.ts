@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeComponent } from '../home/home/home.component';
 
 @Component({
   selector: 'app-result',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultComponent implements OnInit {
 
+  static data:string[][];
   constructor() { }
-  data :string[][];
-  ngOnInit() {
-  }
 
+  ngOnInit():void {
+    console.log(ResultComponent.data);
+  }
+  get data():string[][]{
+    return ResultComponent.data;
+  }
 }

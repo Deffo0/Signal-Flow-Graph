@@ -586,10 +586,12 @@ run(){
 
 
   if(playFlag){
+    var container :string[][];
     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
-          this.server.getResult().subscribe((data)=>{
+          this.server.getResult().subscribe((data:string[][])=>{
             console.log(data);
-            this.result.data = data;
+            container = data
+            ResultComponent.data = container;
             this.router.navigate(['/result']);
           });
     });
