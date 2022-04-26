@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ResultComponent implements OnInit {
 
   constructor() { }
-  public data :string[][] = [["6","5","4","1"],["asa"],["451"],["olk"],["lol"]];
+  data :string[][];
   ngOnInit() {
   }
 

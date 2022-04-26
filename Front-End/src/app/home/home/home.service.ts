@@ -9,21 +9,8 @@ export class HomeService {
     return this.http.post("http://localhost:8080/generateNetwork", productionNetwork,{responseType:"text"})
   }
 
-  public play():Observable<string[][]>{
-    return this.http.get<string[][]>("http://localhost:8080/play")
-  }
-
-  public polling() :Observable<Object[]> {
-    return this.http.get<Object[]>("http://localhost:8080/polling");
-
-  }
-
-  public stop() :Observable<string>{
-    return this.http.get("http://localhost:8080/stop", {responseType:"text"});
-  }
-  public replay() :Observable<Object[][]> {
-    return this.http.get<Object[][]>("http://localhost:8080/replay");
-
+  public getResult():Observable<string[][]>{
+    return this.http.get<string[][]>("http://localhost:8080/getResult")
   }
 
 }

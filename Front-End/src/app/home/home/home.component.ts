@@ -587,7 +587,8 @@ run(){
 
   if(playFlag){
     this.server.generateNetwork(JSON.stringify(convMap)).subscribe((data)=>{
-          this.server.play().subscribe((data)=>{
+          this.server.getResult().subscribe((data)=>{
+            console.log(data);
             this.result.data = data;
             this.router.navigate(['/result']);
           });
@@ -600,15 +601,6 @@ run(){
 
 }
 
-  stop(){
-    this.server.stop().subscribe((data:string)=>{
-      console.log(data)
-      clearInterval(this.playEvent);
-      clearInterval(this.replayEvent);
-
-
-    });
-  }
 
 //----------------------------------------------------------------------//
 
