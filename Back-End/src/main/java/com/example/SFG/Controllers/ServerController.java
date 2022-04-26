@@ -77,9 +77,10 @@ public class ServerController {
                 String pathGain = getter.calcGain(path);
                 forwardPathsGains.add(pathGain);
             }
+            System.out.println(forwardPathsGains);
             for(List<String> loop: getter.getFinalloopsGains().values()){
                 String loopGain = getter.calcGain(loop);
-                forwardPathsGains.add(loopGain);
+                loopsGains.add(loopGain);
             }
             var nonTouching = getter.getNonTouchingLoops();
             for(List<List<List<String>>> nonTouchingType: nonTouching.values()){

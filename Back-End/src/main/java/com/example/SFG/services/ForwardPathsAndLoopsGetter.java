@@ -34,6 +34,20 @@ public class ForwardPathsAndLoopsGetter {
     }
 
     public Map<List<String>, List<String>> getFinalloopsGains() {
+        System.out.println(this.finalloopsGains);
+        for(List<String> list : this.finalloopsGains.values()){
+            Collections.sort(list);
+        }
+
+        for(List<String> key : this.finalloopsGains.keySet()){
+            for(List<String> key2 : this.finalloopsGains.keySet()){
+                if(key != key2){
+                    if(this.finalloopsGains.get(key).equals(this.finalloopsGains.get(key2))){
+                    }
+                }
+            }
+        }
+        System.out.println(this.finalloopsGains);
         return finalloopsGains;
     }
 
