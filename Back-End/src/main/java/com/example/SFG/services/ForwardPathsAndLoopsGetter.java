@@ -197,9 +197,11 @@ public class ForwardPathsAndLoopsGetter {
         return true;
     }
 
+
+
     public String calcDelta(){
         var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
-        int sign = 1;
+        int sign = -1;
         String delta = "1";
         List<List<String>> loopsGains = new ArrayList<>();
         for(List<List<List<String>>> type_i_nonTouching_loops: nonToucingGains.values()){
@@ -213,9 +215,12 @@ public class ForwardPathsAndLoopsGetter {
                     }
                     Multiplication = String.valueOf(multiplication);
                 }else{
+                    boolean flag = false;
                     for(List<String> loop: set_of_loops){
-                        Multiplication.concat("*");
-                        Multiplication.concat(calcGain(loop));
+                        if(flag)
+                            Multiplication = Multiplication.concat("*");
+                        Multiplication = Multiplication.concat(calcGain(loop));
+                        flag = true;
                     }
                 }
                 loops_type_i_gains.add(Multiplication);
@@ -224,19 +229,88 @@ public class ForwardPathsAndLoopsGetter {
         }
         for(List<String> type: loopsGains){
             if(sign == 1)
-                delta.concat("+(");
+                delta = delta.concat("+(");
             else
-                delta.concat("-(");
+                delta = delta.concat("-(");
             for(String term: type){
-                delta.concat(term);
-                delta.concat("+");
+                delta = delta.concat(term);
+                delta = delta.concat("+");
             }
             delta = delta.substring(0, delta.length() - 1);
-            delta.concat(")");
+            delta = delta.concat(")");
+            sign *= -1;
         }
         return delta;
     }
 
+    private boolean haveCommon(ArrayList<String> arr1, ArrayList<String> arr2){
+        ArrayList arr1_copy = new ArrayList();
+        arr1_copy = (ArrayList) arr1.clone();
+        ArrayList arr2_copy = new ArrayList();
+        arr2_copy = (ArrayList) arr2.clone();
+        arr1_copy.retainAll(arr2_copy);
+        boolean result = (arr1_copy.size()==0)?false:true;
+        return result;
+    }
+    public List<String> calcDeltas(){
+        var nonToucingGains = getNonTouchingLoops(this.finalloopssGains);
+        List<String> deltas = new ArrayList<>();
+        for(List<String> path : this.finalSymbolsGains.values()) {
+            int sign = -1;
+            String delta = "1";
+            List<List<String>> loopsGains = new ArrayList<>();
+            for(List<List<List<String>>> type_i_nonTouching_loops: nonToucingGains.values()){
+                List<String> loops_type_i_gains = new ArrayList<>();
+                for(List<List<String>> set_of_loops: type_i_nonTouching_loops){
+                    String Multiplication = "";
+                    boolean haveCommon = false;
+                    if(isNumeric){
+                        int multiplication = 1;
+                        for(List<String> loop: set_of_loops){
+                            if(haveCommon((ArrayList<String>) loop,(ArrayList<String>) path)) {
+                                haveCommon = true;
+                                continue;
+                            }
+                            multiplication *= Integer.parseInt(calcGain(loop));
+                        }
+                        Multiplication = String.valueOf(multiplication);
+                    }else{
+                        boolean flag = false;
+                        for(List<String> loop: set_of_loops){
+                            if(haveCommon((ArrayList<String>) loop,(ArrayList<String>) path)) {
+                                haveCommon = true;
+                                continue;
+                            }
+                            if(flag)
+                                Multiplication = Multiplication.concat("*");
+                            Multiplication = Multiplication.concat(calcGain(loop));
+                            flag = true;
+                        }
+                    }
+                    if(!haveCommon)
+                        loops_type_i_gains.add(Multiplication);
+                }
+                loopsGains.add(loops_type_i_gains);
+            }
+            for(List<String> type: loopsGains){
+                if(sign == 1)
+                    delta = delta.concat("+(");
+                else
+                    delta = delta.concat("-(");
+                for(String term: type){
+                    delta = delta.concat(term);
+                    delta = delta.concat("+");
+                }
+                delta = delta.substring(0, delta.length() - 1);
+                if(delta.charAt(delta.length() - 1) == '+')
+                    delta = delta.substring(0, delta.length() - 1);
+                delta = delta.concat(")");
+                sign *= -1;
+            }
+            deltas.add(delta);
+        }
+        return deltas;
+    }
 
     public String getTransferFunction(){
         List<String> Ps = new ArrayList<>();
@@ -244,8 +318,17 @@ public class ForwardPathsAndLoopsGetter {
         String delta;
         Ps = calcPs();
         delta = calcDelta();
-        //deltas = calcDeltas();
-        return null;
+        deltas = calcDeltas();
+        String TF = "( ";
+        for(int i=0; i<Ps.size(); i++){
+            TF = TF.concat(Ps.get(i));
+            TF = TF.concat(" * (");
+            TF = TF.concat(deltas.get(i));
+            TF = TF.concat(")");
+        }
+        TF = TF.concat(" )/");
+        TF = TF.concat(delta);
+        return TF;
     }
 
     public String calcGain(List<String> path){
@@ -262,10 +345,13 @@ public class ForwardPathsAndLoopsGetter {
                 if(isInteger(symbol))
                     intPart *= Integer.parseInt(symbol);
                 else
-                    strPart.concat(symbol);
+                    strPart = strPart.concat(symbol);
 
             }
-            gain = String.valueOf((Integer)intPart).concat(strPart);
+            if(intPart == 1)
+                gain = strPart;
+            else
+                gain = String.valueOf((Integer)intPart).concat(strPart);
         }
         return gain;
     }

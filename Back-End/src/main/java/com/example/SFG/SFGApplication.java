@@ -8,8 +8,8 @@ public class SFGApplication {
 
 	public static void main(String[] args) {
 		ForwardPathsAndLoopsGetter getter = new ForwardPathsAndLoopsGetter();
-		Tester2 test2 = new Tester2(getter);
-		test2.test();
+		Tester3 test3 = new Tester3(getter);
+		test3.test();
 		SpringApplication.run(SFGApplication.class, args);
 	}
 

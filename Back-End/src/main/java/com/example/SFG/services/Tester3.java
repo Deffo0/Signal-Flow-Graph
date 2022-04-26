@@ -38,6 +38,7 @@ public class Tester3 {
         toNeighbours2.put(node1, "H2");
         toNeighbours2.put(node3, "G3");
         toNeighbours3.put(nodeC, "G4");
+        toNeighbours3.put(node2, "H3");
         toNeighbours4.put(node5, "G6");
         toNeighbours5.put(node4, "H6");
         toNeighbours5.put(node6, "G7");
@@ -74,6 +75,22 @@ public class Tester3 {
             System.out.println(y);
         }catch (Exception e){
             System.out.println("Error in calcDelta");
+        }
+
+        try {
+            var z = pathsGetter.calcDeltas();
+            System.out.println("calcDeltas::::::::::");
+            System.out.println(Arrays.toString(z.toArray()));
+        }catch (Exception e){
+            System.out.println("Error in calcDeltasss");
+        }
+
+        try {
+            var TF = pathsGetter.getTransferFunction();
+            System.out.println("Transfer Function::::::::::");
+            System.out.println(TF);
+        }catch (Exception e){
+            System.out.println("Error in calcDeltasss");
         }
 
 
