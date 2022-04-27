@@ -292,6 +292,9 @@ public class ForwardPathsAndLoopsGetter {
             loopsGains.add(loops_type_i_gains);
         }
         for(List<String> type: loopsGains){
+            if(type.isEmpty()){
+                continue;
+            }
             if(sign == 1)
                 delta = delta.concat(" + ( ");
             else
@@ -337,7 +340,7 @@ public class ForwardPathsAndLoopsGetter {
                     boolean haveCommon = false;
                     if (isNumeric) {
                         int multiplication = 1;
-                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); j++) {
+                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); k++) {
                             var y = myValuesNodes.get(i).get(j).get(k);
                             if (haveCommon((ArrayList<String>) y, (ArrayList<String>) path)) {
                                 haveCommon = true;
@@ -348,7 +351,7 @@ public class ForwardPathsAndLoopsGetter {
                         Multiplication = String.valueOf(multiplication);
                     } else {
                         boolean flag = false;
-                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); j++) {
+                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); k++) {
                             var y = myValuesNodes.get(i).get(j).get(k);
                             if (haveCommon((ArrayList<String>) y, (ArrayList<String>) path)) {
                                 haveCommon = true;
@@ -366,18 +369,21 @@ public class ForwardPathsAndLoopsGetter {
                 loopsGains.add(loops_type_i_gains);
             }
             for(List<String> type: loopsGains){
+                if(type.isEmpty()){
+                    continue;
+                }
                 if(sign == 1)
-                    delta = delta.concat("+(");
+                    delta = delta.concat(" + ( ");
                 else
-                    delta = delta.concat("-(");
+                    delta = delta.concat(" - ( ");
                 for(String term: type){
                     delta = delta.concat(term);
-                    delta = delta.concat("+");
+                    delta = delta.concat(" + ");
                 }
                 delta = delta.substring(0, delta.length() - 1);
                 if(delta.charAt(delta.length() - 1) == '+')
                     delta = delta.substring(0, delta.length() - 1);
-                delta = delta.concat(")");
+                delta = delta.concat(" ) ");
                 sign *= -1;
             }
             deltas.add(delta);
