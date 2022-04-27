@@ -320,12 +320,13 @@ public class ForwardPathsAndLoopsGetter {
     }
     public List<String> calcDeltas(){
         var nonTouchingGains = getNonTouchingLoops(this.finalloopsGains);
+        var nonTouchNodes = getNonTouchNodes();
         List<String> deltas = new ArrayList<>();
         for(List<String> path : this.finalSymbolsGains.values()) {
             int sign = -1;
             String delta = "1";
             List<List<String>> loopsGains = new ArrayList<>();
-            for(List<List<List<String>>> type_i_nonTouching_loops: nonTouchingGains.values()){
+            for(List<List<List<String>>> type_i_nonTouching_loops: nonTouchNodes.values()){
                 List<String> loops_type_i_gains = new ArrayList<>();
                 for(List<List<String>> set_of_loops: type_i_nonTouching_loops){
                     String Multiplication = "";
@@ -381,6 +382,7 @@ public class ForwardPathsAndLoopsGetter {
                 delta = delta.replaceAll("\\( 1-\\)", "");
                 delta = delta.replaceAll("\\(1- \\)", "");
                 delta = delta.replaceAll("1-\\)", "1");
+                delta = delta.replaceAll("\\(\\)", "1");
                 delta = delta.substring(0, delta.length() - 1);
                 if(delta.charAt(delta.length() - 1) == '+')
                     delta = delta.substring(0, delta.length() - 1);
@@ -423,6 +425,7 @@ public class ForwardPathsAndLoopsGetter {
         TF = TF.replaceAll("\\*\\s*\\(1-\\)\\)", "");
         TF = TF.replaceAll("\\*\\s*\\(1\\)\\)", "");
         TF = TF.replaceAll("\\*\\s*\\)\\)", "");
+        TF = TF.replaceAll("\\(\\)", "");
         System.out.println("TRANSFER FUNCTION: \n" + TF);
         return TF;
     }
