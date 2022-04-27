@@ -43,7 +43,7 @@ public class ServerController {
         System.out.println("INSIDE GENERATE NETWORK");
         try {
             System.out.println(productionNetwork);
-            if (this.newProductionNetwork.size() > 1) {
+            if (this.newProductionNetwork.size() >= 1) {
                 this.newProductionNetwork = new ArrayList<>();
             }
 
@@ -112,7 +112,9 @@ public class ServerController {
             Result[0] = convertToArray((ArrayList<String>) forwardPathsGains);
             System.out.println(Arrays.toString(Result[0]));
             Result[1] = convertToArray((ArrayList<String>) loopsGains);
-            nonTouchingRETURNED.remove(0);
+            if(nonTouchingRETURNED.size() >= 1){
+                nonTouchingRETURNED.remove(0);
+            }
             Result[2] = convertToArray((ArrayList<String>) nonTouchingRETURNED);
             Result[3] = convertToArray((ArrayList<String>) deltas);
             Result[4] =  convertToArray((ArrayList<String>) TF);
