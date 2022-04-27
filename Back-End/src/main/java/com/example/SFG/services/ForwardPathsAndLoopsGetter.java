@@ -350,7 +350,6 @@ public class ForwardPathsAndLoopsGetter {
                 loopsGains.add(loops_type_i_gains);
             }
             for(List<String> type: loopsGains){
-                System.out.println("Loops Gain " + type);
                 if(type.isEmpty()){
                     continue;
                 }
