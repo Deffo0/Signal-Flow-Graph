@@ -318,6 +318,7 @@ public class ForwardPathsAndLoopsGetter {
         boolean result = (arr1_copy.size()==0)?false:true;
         return result;
     }
+    //CALC
     public List<String> calcDeltas(){
         var nonTouchGains = getNonTouchingLoops(this.finalloopsGains);
         var nonTouchNodes = getNonTouchNodes();
