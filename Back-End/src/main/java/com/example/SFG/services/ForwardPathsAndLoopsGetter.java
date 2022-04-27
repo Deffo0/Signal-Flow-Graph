@@ -19,6 +19,7 @@ public class ForwardPathsAndLoopsGetter {
 
     private Map<List<String>, List<String>> finalSymbolsGains;
     private Map<List<String>, List<String>> finalloopsGains;
+    private Map<Integer, List<List<List<String>>>> nonTouchNodes;
 
     boolean isNumeric;
 
@@ -31,6 +32,7 @@ public class ForwardPathsAndLoopsGetter {
         this.pathSymbols = new ArrayList<>();
         this.finalSymbolsGains = new HashMap<>();
         this.finalloopsGains = new HashMap<>();
+        nonTouchNodes = new HashMap<>();
         this.isNumeric = true;
     }
 
@@ -38,7 +40,7 @@ public class ForwardPathsAndLoopsGetter {
         System.out.println(this.finalloopsGains);
         for(List<String> list : this.finalloopsGains.values()){
             Collections.sort(list);
-        }
+    }
 
         for(List<String> key : this.finalloopsGains.keySet()){
             for(List<String> key2 : this.finalloopsGains.keySet()){
@@ -173,11 +175,15 @@ public class ForwardPathsAndLoopsGetter {
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops() {
         return getNonTouchingLoops(this.finalloopsGains);
     }
+    public Map<Integer, List<List<List<String>>>> getNonTouchNodes() {
+        return this.nonTouchNodes;
+    }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(Map<List<String>, List<String>> finalloopssGains){
 
 
         Map<String, List<String>> loops = new HashMap<>();
+        Map<String, List<String>> loopsNodes = new HashMap<>();
         List<String> loopsNames = new ArrayList<>();
         List<List<List<String>>> loopSubsets = new ArrayList<>();
 
@@ -187,7 +193,6 @@ public class ForwardPathsAndLoopsGetter {
             loopsNames.add("L".concat(Integer.toString(ctr + 1)));
             ctr++;
         }
-
 
 
         for(int i = 1; i <= 5; i++){
@@ -221,13 +226,17 @@ public class ForwardPathsAndLoopsGetter {
             System.out.println(loopSubset);
 
             nonTouchGains.putIfAbsent(loopSubset.size(), new ArrayList<>());
+            nonTouchNodes.putIfAbsent(loopSubset.size(), new ArrayList<>());
             nonTouchGains.get(loopSubset.size()).add(new ArrayList<>());
+            nonTouchNodes.get(loopSubset.size()).add(new ArrayList<>());
 
             for(String loop : loopSubset){
                 nonTouchGains.get(loopSubset.size()).get(nonTouchGains.get(loopSubset.size()).size() - 1).add(finalloopssGains.get(loops.get(loop)));
-
+                System.out.println("------------------------------------------------------------------------");
+                System.out.println(" ---->" + loops.get(loop));
+                System.out.println("------------------------------------------------------------------------");
+                this.nonTouchNodes.get(loopSubset.size()).get(nonTouchGains.get(loopSubset.size()).size() - 1).add(loops.get(loop));
             }
-
         }
         return nonTouchGains;
     }
