@@ -293,7 +293,7 @@ public class ForwardPathsAndLoopsGetter {
                     delta = delta.concat(" + ");
                 }
             }
-            delta = delta.substring(0, delta.length() - 1);
+            delta = delta.substring(0, delta.length());
             delta = delta.concat(" ) ");
             sign *= -1;
         }
