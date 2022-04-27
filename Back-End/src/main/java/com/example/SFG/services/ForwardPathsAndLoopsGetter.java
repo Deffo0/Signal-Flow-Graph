@@ -319,75 +319,64 @@ public class ForwardPathsAndLoopsGetter {
         return result;
     }
     public List<String> calcDeltas(){
-        var nonTouchingGains = getNonTouchingLoops(this.finalloopsGains);
+        var nonTouchGains = getNonTouchingLoops(this.finalloopsGains);
         var nonTouchNodes = getNonTouchNodes();
         List<String> deltas = new ArrayList<>();
-        for(List<String> path : this.finalSymbolsGains.values()) {
+        for(List<String> path : this.finalSymbolsGains.keySet()) {
             int sign = -1;
             String delta = "1";
             List<List<String>> loopsGains = new ArrayList<>();
-            for(List<List<List<String>>> type_i_nonTouching_loops: nonTouchNodes.values()){
+            List<List<List<List<String>>>> myValuesGains = new ArrayList<>(nonTouchGains.values());
+            List<List<List<List<String>>>> myValuesNodes = new ArrayList<>(nonTouchNodes.values());
+            for (int i = 0; i < myValuesGains.size(); i++) {
                 List<String> loops_type_i_gains = new ArrayList<>();
-                for(List<List<String>> set_of_loops: type_i_nonTouching_loops){
+                for (int j = 0; j < myValuesGains.get(i).size(); j++) {
+                    //var eeee = myValuesGains.get(i).get(j);
                     String Multiplication = "";
                     boolean haveCommon = false;
-                    if(isNumeric){
+                    if (isNumeric) {
                         int multiplication = 1;
-                        for(List<String> loop: set_of_loops){
-                            if(haveCommon((ArrayList<String>) loop,(ArrayList<String>) path)) {
+                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); j++) {
+                            var y = myValuesNodes.get(i).get(j).get(k);
+                            if (haveCommon((ArrayList<String>) y, (ArrayList<String>) path)) {
                                 haveCommon = true;
                                 continue;
                             }
-                            multiplication *= Integer.parseInt(calcGain(loop));
+                            multiplication *= Integer.parseInt(calcGain(myValuesGains.get(i).get(j).get(k)));
                         }
                         Multiplication = String.valueOf(multiplication);
-                    }else{
+                    } else {
                         boolean flag = false;
-                        for(List<String> loop: set_of_loops){
-                            if(haveCommon((ArrayList<String>) loop,(ArrayList<String>) path)) {
+                        for (int k = 0; k < myValuesGains.get(i).get(j).size(); j++) {
+                            var y = myValuesNodes.get(i).get(j).get(k);
+                            if (haveCommon((ArrayList<String>) y, (ArrayList<String>) path)) {
                                 haveCommon = true;
                                 continue;
                             }
-                            if(flag)
+                            if (flag)
                                 Multiplication = Multiplication.concat("*");
-                            Multiplication = Multiplication.concat(calcGain(loop));
+                            Multiplication = Multiplication.concat(calcGain(myValuesGains.get(i).get(j).get(k)));
                             flag = true;
                         }
                     }
-                    if(!haveCommon)
+                    if (!haveCommon)
                         loops_type_i_gains.add(Multiplication);
                 }
                 loopsGains.add(loops_type_i_gains);
             }
             for(List<String> type: loopsGains){
-                if(type.isEmpty()){
-                    continue;
-                }
                 if(sign == 1)
-                    delta = delta.concat(" + ( ");
+                    delta = delta.concat("+(");
                 else
-                    delta = delta.concat(" - ( ");
+                    delta = delta.concat("-(");
                 for(String term: type){
-                    if(term != "1" && term != "1 - ") {
-                        delta = delta.concat(term);
-                        delta = delta.concat(" + ");
-                    }
+                    delta = delta.concat(term);
+                    delta = delta.concat("+");
                 }
-                delta = delta.replaceAll("\\(1\\)", "");
-                delta = delta.replaceAll("\\( 1 \\)", "");
-                delta = delta.replaceAll("\\( 1\\)", "");
-                delta = delta.replaceAll("\\(1 \\)", "");
-                delta = delta.replaceAll("\\(1-\\)", "");
-                delta = delta.replaceAll("\\( 1- \\)", "");
-                delta = delta.replaceAll("\\( 1-\\)", "");
-                delta = delta.replaceAll("\\(1- \\)", "");
-                delta = delta.replaceAll("1-\\)", "1");
-                delta = delta.replaceAll("\\(\\)", "1");
                 delta = delta.substring(0, delta.length() - 1);
                 if(delta.charAt(delta.length() - 1) == '+')
                     delta = delta.substring(0, delta.length() - 1);
-                delta = delta.concat(" ) ");
-                delta = delta.replaceAll("1-\\)", "1");
+                delta = delta.concat(")");
                 sign *= -1;
             }
             deltas.add(delta);

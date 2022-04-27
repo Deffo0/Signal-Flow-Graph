@@ -86,6 +86,7 @@ public class ServerController {
             for(List<String> path: getter.getFinalSymbolsGains().values()){
                 String pathGain = getter.calcGain(path);
                 forwardPathsGains.add(pathGain);
+
             }
             for(List<String> loop: getter.getFinalloopsGains().values()){
                 String loopGain = getter.calcGain(loop);
