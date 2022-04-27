@@ -508,10 +508,7 @@ export class HomeComponent implements OnInit {
         machine = null;
 
         document.getElementById("machine")!.style.backgroundColor = "transparent"
-
-
       }
-
     });
     if(createMachineFlag){
       document.getElementById("machine")!.style.backgroundColor = "rgba(58, 57, 57, 0.856)"

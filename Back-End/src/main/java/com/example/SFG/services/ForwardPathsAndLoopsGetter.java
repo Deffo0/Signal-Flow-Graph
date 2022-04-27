@@ -284,15 +284,17 @@ public class ForwardPathsAndLoopsGetter {
         }
         for(List<String> type: loopsGains){
             if(sign == 1)
-                delta = delta.concat("+(");
+                delta = delta.concat(" + ( ");
             else
-                delta = delta.concat("-(");
-            for(String term: type){
-                delta = delta.concat(term);
-                delta = delta.concat("+");
+                delta = delta.concat(" - ( " );
+            for(int i = 0; i < type.size(); i++){
+                delta = delta.concat(type.get(i));
+                if(i != type.size() - 1){
+                    delta = delta.concat(" + ");
+                }
             }
             delta = delta.substring(0, delta.length() - 1);
-            delta = delta.concat(")");
+            delta = delta.concat(" ) ");
             sign *= -1;
         }
         return delta;
@@ -348,14 +350,18 @@ public class ForwardPathsAndLoopsGetter {
                 loopsGains.add(loops_type_i_gains);
             }
             for(List<String> type: loopsGains){
+                System.out.println("Loops Gain " + type);
+                if(type.isEmpty()){
+                    continue;
+                }
                 if(sign == 1)
-                    delta = delta.concat("+(");
+                    delta = delta.concat(" + ( ");
                 else
-                    delta = delta.concat("-(");
+                    delta = delta.concat(" - ( ");
                 for(String term: type){
-                    if(term != "1" && term != "1-") {
+                    if(term != "1" && term != "1 - ") {
                         delta = delta.concat(term);
-                        delta = delta.concat("+");
+                        delta = delta.concat(" + ");
                     }
                 }
                 delta = delta.replaceAll("\\(1\\)", "");
@@ -370,7 +376,7 @@ public class ForwardPathsAndLoopsGetter {
                 delta = delta.substring(0, delta.length() - 1);
                 if(delta.charAt(delta.length() - 1) == '+')
                     delta = delta.substring(0, delta.length() - 1);
-                delta = delta.concat(")");
+                delta = delta.concat(" ) ");
                 delta = delta.replaceAll("1-\\)", "1");
                 sign *= -1;
             }
@@ -389,14 +395,17 @@ public class ForwardPathsAndLoopsGetter {
         String TF = "( ";
         for(int i=0; i<Ps.size(); i++){
             TF = TF.concat(Ps.get(i));
-            if(deltas.get(i) != "1" && deltas.get(i) != "1-" && deltas.get(i) != "" && deltas.get(i) != " ") {
+            if(deltas.get(i) != "1" && deltas.get(i) != "1 - " && deltas.get(i) != "" && deltas.get(i) != " ") {
                 TF = TF.concat(" * ");
-                TF = TF.concat("(");
+                TF = TF.concat(" ( ");
                 TF = TF.concat(deltas.get(i));
-                TF = TF.concat(")");
+                TF = TF.concat(" ) ");
+            }
+            if(i != Ps.size() - 1){
+                TF = TF.concat(" + ");
             }
         }
-        TF = TF.concat(" )/");
+        TF = TF.concat(" ) / ");
         TF = TF.concat(delta);
         System.out.println("TRANSFER FUNCTION: \n" + TF);
         String remove = "\\*\\(1\\)";
