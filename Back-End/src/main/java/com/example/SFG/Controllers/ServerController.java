@@ -24,7 +24,6 @@ public class ServerController {
     ArrayList<HashMap<String, String[]>> newProductionNetwork;
     private NetworkOptimizer optimizer;
 
-
     @Autowired
     public ServerController(NetworkOptimizer optimizer) {
         this.newProductionNetwork = new ArrayList<>();
@@ -70,15 +69,24 @@ public class ServerController {
             List<String> deltas = new ArrayList<>();
             List<String> TF = new ArrayList<>();
             List<Node> vertices =  optimizer.optimizeNetwork(newProductionNetwork);
+            System.out.println("###########################");
+            System.out.println("production network");
+            for(var elem: newProductionNetwork){
+                for(String[] elem2: elem.values()){
+                    System.out.println(Arrays.toString(elem2));
+                }
+                System.out.println("\n");
+            }
+            System.out.println("###########################");
             getter.setVertices(vertices);
             getter.setSourceIndex(vertices.indexOf(optimizer.getNodeFromSymbol("Machine0")));
             getter.setSinkIndex(vertices.indexOf(optimizer.getNodeFromSymbol("Machine1")));
             getter.getPaths();
+
             for(List<String> path: getter.getFinalSymbolsGains().values()){
                 String pathGain = getter.calcGain(path);
                 forwardPathsGains.add(pathGain);
             }
-            System.out.println(forwardPathsGains);
             for(List<String> loop: getter.getFinalloopsGains().values()){
                 String loopGain = getter.calcGain(loop);
                 loopsGains.add(loopGain);
@@ -100,8 +108,11 @@ public class ServerController {
             TF.add(getter.getTransferFunction());
             System.out.println(Arrays.toString(nonTouchingRETURNED.toArray()));
             String[][] Result = new String[5][];
+
             Result[0] = convertToArray((ArrayList<String>) forwardPathsGains);
+            System.out.println(Arrays.toString(Result[0]));
             Result[1] = convertToArray((ArrayList<String>) loopsGains);
+            nonTouchingRETURNED.remove(0);
             Result[2] = convertToArray((ArrayList<String>) nonTouchingRETURNED);
             Result[3] = convertToArray((ArrayList<String>) deltas);
             Result[4] =  convertToArray((ArrayList<String>) TF);

@@ -5,6 +5,7 @@ import org.paukov.combinatorics3.Generator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,11 +68,43 @@ public class ForwardPathsAndLoopsGetter {
     public void setSourceIndex(int sourceIndex) {this.sourceIndex = sourceIndex;}
     public void setSinkIndex(int sinkIndex) {this.sinkIndex = sinkIndex;}
 
+    public boolean similarityCheck(ArrayList<String> list1, ArrayList<String> list2){
+        boolean result = true;
+        for(String elem: list1){
+            if(!list2.contains(elem))
+                result = false;
+        }
+        return  result;
+    }
     public void getPaths(){
         this.pathSymbols.add(vertices.get(sourceIndex).getSymbol());
         System.out.println("source " + sourceIndex);
         dfs(this.sourceIndex);
 
+        //Remove redundant loops
+        int i=0;
+        ArrayList<List<String>> tobeRemoved = new ArrayList<>();
+        for(var key: finalloopsGains.keySet()){
+            var values1 = (ArrayList<String>) ((ArrayList<String>) finalloopsGains.get(key)).clone();
+            int j=0;
+            for(var key2: finalloopsGains.keySet()){
+                if(j>=i)
+                    continue;
+                var values2 = (ArrayList<String>) ((ArrayList<String>) finalloopsGains.get(key2)).clone();
+                boolean areSimilar = false;
+                if(i != j)
+                    areSimilar = similarityCheck(values1, values2);
+                if(areSimilar) {
+                    tobeRemoved.add(key2);
+                }
+                j++;
+            }
+            i++;
+        }
+
+        for(var elem: tobeRemoved){
+            this.finalloopsGains.remove(elem);
+        }
         try {
             for(List<String> symbols : this.finalSymbolsGains.keySet()){
                 System.out.println("Path: " );
@@ -320,13 +353,25 @@ public class ForwardPathsAndLoopsGetter {
                 else
                     delta = delta.concat("-(");
                 for(String term: type){
-                    delta = delta.concat(term);
-                    delta = delta.concat("+");
+                    if(term != "1" && term != "1-") {
+                        delta = delta.concat(term);
+                        delta = delta.concat("+");
+                    }
                 }
+                delta = delta.replaceAll("\\(1\\)", "");
+                delta = delta.replaceAll("\\( 1 \\)", "");
+                delta = delta.replaceAll("\\( 1\\)", "");
+                delta = delta.replaceAll("\\(1 \\)", "");
+                delta = delta.replaceAll("\\(1-\\)", "");
+                delta = delta.replaceAll("\\( 1- \\)", "");
+                delta = delta.replaceAll("\\( 1-\\)", "");
+                delta = delta.replaceAll("\\(1- \\)", "");
+                delta = delta.replaceAll("1-\\)", "1");
                 delta = delta.substring(0, delta.length() - 1);
                 if(delta.charAt(delta.length() - 1) == '+')
                     delta = delta.substring(0, delta.length() - 1);
                 delta = delta.concat(")");
+                delta = delta.replaceAll("1-\\)", "1");
                 sign *= -1;
             }
             deltas.add(delta);
@@ -350,10 +395,17 @@ public class ForwardPathsAndLoopsGetter {
                 TF = TF.concat(deltas.get(i));
                 TF = TF.concat(")");
             }
-
         }
         TF = TF.concat(" )/");
         TF = TF.concat(delta);
+        System.out.println("TRANSFER FUNCTION: \n" + TF);
+        String remove = "\\*\\(1\\)";
+        TF = TF.replaceAll("\\*\\s*\\(1-\\)", "");
+        TF = TF.replaceAll("\\*\\s*\\(1\\)", "");
+        TF = TF.replaceAll("\\*\\s*\\)", "");
+        TF = TF.replaceAll("\\*\\s*\\(1-\\)\\)", "");
+        TF = TF.replaceAll("\\*\\s*\\(1\\)\\)", "");
+        TF = TF.replaceAll("\\*\\s*\\)\\)", "");
         System.out.println("TRANSFER FUNCTION: \n" + TF);
         return TF;
     }
