@@ -275,13 +275,13 @@ public class ForwardPathsAndLoopsGetter {
         return result;
     }
     public List<String> calcDeltas(){
-        var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
+        var nonTouchingGains = getNonTouchingLoops(this.finalloopsGains);
         List<String> deltas = new ArrayList<>();
         for(List<String> path : this.finalSymbolsGains.values()) {
             int sign = -1;
             String delta = "1";
             List<List<String>> loopsGains = new ArrayList<>();
-            for(List<List<List<String>>> type_i_nonTouching_loops: nonToucingGains.values()){
+            for(List<List<List<String>>> type_i_nonTouching_loops: nonTouchingGains.values()){
                 List<String> loops_type_i_gains = new ArrayList<>();
                 for(List<List<String>> set_of_loops: type_i_nonTouching_loops){
                     String Multiplication = "";

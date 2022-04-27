@@ -71,8 +71,8 @@ public class ServerController {
             List<String> TF = new ArrayList<>();
             List<Node> vertices =  optimizer.optimizeNetwork(newProductionNetwork);
             getter.setVertices(vertices);
-            getter.setSourceIndex(0);
-            getter.setSinkIndex(vertices.size() - 1);
+            getter.setSourceIndex(vertices.indexOf(optimizer.getNodeFromSymbol("Machine0")));
+            getter.setSinkIndex(vertices.indexOf(optimizer.getNodeFromSymbol("Machine1")));
             getter.getPaths();
             for(List<String> path: getter.getFinalSymbolsGains().values()){
                 String pathGain = getter.calcGain(path);

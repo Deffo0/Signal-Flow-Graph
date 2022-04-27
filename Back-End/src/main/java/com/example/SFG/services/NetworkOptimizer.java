@@ -62,7 +62,7 @@ public class NetworkOptimizer {
         return nodeList;
     }
 
-    private Node getNodeFromSymbol(String symbol){
+    public Node getNodeFromSymbol(String symbol){
         for(Node node: nodeList){
             if(Objects.equals(node.getSymbol(), symbol))
                 return node;
