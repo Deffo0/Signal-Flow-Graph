@@ -43,6 +43,7 @@ public class ServerController {
     String generateNetwork(@RequestBody String productionNetwork){
         System.out.println("INSIDE GENERATE NETWORK");
         try {
+            System.out.println(productionNetwork);
             if (this.newProductionNetwork.size() > 1) {
                 this.newProductionNetwork = new ArrayList<>();
             }

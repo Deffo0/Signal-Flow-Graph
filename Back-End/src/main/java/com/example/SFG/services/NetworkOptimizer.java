@@ -20,7 +20,16 @@ public class NetworkOptimizer {
         nodeList = new ArrayList<>();
         for(HashMap<String, String[]> map: networkList){
             for(String key : map.keySet()) nodeList.add(new Node(key));
-            nodeList.add(new Node("Machine1"));
+            boolean found = false;
+            for(Node n : nodeList){
+                if(n.getSymbol().equals("Machine1")){
+                    found = true;
+                }
+            }
+
+            if(!found){
+                nodeList.add(new Node("Machine1"));
+            }
             int index = 0;
             for(String key : map.keySet()){
                 Node node = nodeList.get(index++);
