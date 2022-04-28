@@ -1,15 +1,16 @@
-package com.example.SFG.services;
+package com.example.SFG.Tests;
 
-import com.example.SFG.model.Node;
+import com.example.SFG.Model.Node;
+import com.example.SFG.Services.NetworkAnalyser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class Tester4 {
-    private ForwardPathsAndLoopsGetter pathsGetter;
+    private NetworkAnalyser pathsGetter;
 
     @Autowired
-    public Tester4(ForwardPathsAndLoopsGetter pathsGetter) {
+    public Tester4(NetworkAnalyser pathsGetter) {
         this.pathsGetter = pathsGetter;
     }
 

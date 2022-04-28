@@ -1,4 +1,4 @@
-package com.example.SFG.model;
+package com.example.SFG.Model;
 
 import java.util.HashMap;
 import java.util.Map;

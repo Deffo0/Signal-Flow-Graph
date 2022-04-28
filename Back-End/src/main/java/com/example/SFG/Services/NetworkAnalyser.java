@@ -1,15 +1,14 @@
-package com.example.SFG.services;
+package com.example.SFG.Services;
 
-import com.example.SFG.model.Node;
+import com.example.SFG.Model.Node;
 import org.paukov.combinatorics3.Generator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class ForwardPathsAndLoopsGetter {
+public class NetworkAnalyser {
     private List<Node> vertices;
     private int sourceIndex;
     private int sinkIndex;
@@ -23,7 +22,7 @@ public class ForwardPathsAndLoopsGetter {
 
     boolean isNumeric;
 
-    public ForwardPathsAndLoopsGetter() {
+    public NetworkAnalyser() {
         vertices = new ArrayList<>();
         sinkIndex = 0;
         sourceIndex = 0;
@@ -67,7 +66,9 @@ public class ForwardPathsAndLoopsGetter {
             }
         }
     }
+
     public void setSourceIndex(int sourceIndex) {this.sourceIndex = sourceIndex;}
+
     public void setSinkIndex(int sinkIndex) {this.sinkIndex = sinkIndex;}
 
     public boolean similarityCheck(ArrayList<String> list1, ArrayList<String> list2){
@@ -78,6 +79,7 @@ public class ForwardPathsAndLoopsGetter {
         }
         return  result;
     }
+
     public void getPaths(){
         this.pathSymbols.add(vertices.get(sourceIndex).getSymbol());
         System.out.println("source " + sourceIndex);
@@ -133,7 +135,6 @@ public class ForwardPathsAndLoopsGetter {
 
     }
 
-
     private void dfs(int startIndex){
         if(visited[startIndex]) {
             //There is loop
@@ -175,12 +176,12 @@ public class ForwardPathsAndLoopsGetter {
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops() {
         return getNonTouchingLoops(this.finalloopsGains);
     }
+
     public Map<Integer, List<List<List<String>>>> getNonTouchNodes() {
         return this.nonTouchNodes;
     }
 
     public Map<Integer, List<List<List<String>>>> getNonTouchingLoops(Map<List<String>, List<String>> finalloopssGains){
-
 
         Map<String, List<String>> loops = new HashMap<>();
         Map<String, List<String>> loopsNodes = new HashMap<>();
@@ -261,8 +262,6 @@ public class ForwardPathsAndLoopsGetter {
         return true;
     }
 
-
-
     public String calcDelta(){
         var nonToucingGains = getNonTouchingLoops(this.finalloopsGains);
         int sign = -1;
@@ -321,7 +320,7 @@ public class ForwardPathsAndLoopsGetter {
         boolean result = (arr1_copy.size()==0)?false:true;
         return result;
     }
-    //CALC
+
     public List<String> calcDeltas(){
         var nonTouchGains = getNonTouchingLoops(this.finalloopsGains);
         var nonTouchNodes = getNonTouchNodes();

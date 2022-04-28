@@ -1,6 +1,6 @@
-package com.example.SFG.services;
+package com.example.SFG.Services;
 
-import com.example.SFG.model.Node;
+import com.example.SFG.Model.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +8,10 @@ import java.util.*;
 
 @Service
 public class NetworkOptimizer {
-    private ForwardPathsAndLoopsGetter pathsAndLoopsGetter;
+    private NetworkAnalyser pathsAndLoopsGetter;
     private List<Node> nodeList;
     @Autowired
-    public NetworkOptimizer(ForwardPathsAndLoopsGetter pathsAndLoopsGetter) {
+    public NetworkOptimizer(NetworkAnalyser pathsAndLoopsGetter) {
         this.pathsAndLoopsGetter = pathsAndLoopsGetter;
         nodeList = new ArrayList<>();
     }

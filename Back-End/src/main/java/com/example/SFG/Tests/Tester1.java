@@ -1,6 +1,7 @@
-package com.example.SFG.services;
+package com.example.SFG.Tests;
 
-import com.example.SFG.model.Node;
+import com.example.SFG.Model.Node;
+import com.example.SFG.Services.NetworkAnalyser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class Tester {
-    private ForwardPathsAndLoopsGetter pathsGetter;
+public class Tester1 {
+    private NetworkAnalyser pathsGetter;
 
     @Autowired
-    public Tester(ForwardPathsAndLoopsGetter pathsGetter) {
+    public Tester1(NetworkAnalyser pathsGetter) {
         this.pathsGetter = pathsGetter;
     }
 

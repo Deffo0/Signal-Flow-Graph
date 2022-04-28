@@ -1,8 +1,8 @@
 package com.example.SFG.Controllers;
 
-import com.example.SFG.model.Node;
-import com.example.SFG.services.ForwardPathsAndLoopsGetter;
-import com.example.SFG.services.NetworkOptimizer;
+import com.example.SFG.Model.Node;
+import com.example.SFG.Services.NetworkAnalyser;
+import com.example.SFG.Services.NetworkOptimizer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -62,7 +61,7 @@ public class ServerController {
     String[][] getResult(){
         System.out.println("INSIDE GET RESULT");
         try {
-            ForwardPathsAndLoopsGetter getter = new ForwardPathsAndLoopsGetter();
+            NetworkAnalyser getter = new NetworkAnalyser();
             List<String> forwardPathsGains = new ArrayList<String>();
             List<String> loopsGains = new ArrayList<>();
             List<String> nonTouchingRETURNED = new ArrayList<>();
