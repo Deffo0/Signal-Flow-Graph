@@ -37,7 +37,6 @@ a controller to manage all the business logic and data manipulation and a view r
 ## Sample Runs
 + **First Network**:
 ![image](https://raw.githubusercontent.com/Deffo0/Signal-Flow-Graph/main/Sample-Runs/Run1.1.png?token=GHSAT0AAAAAABOS2XDBHJAPNAFWON2ZJUDWYTKYBTQ)
----
 + **First Result**:
 ![image](https://raw.githubusercontent.com/Deffo0/Signal-Flow-Graph/main/Sample-Runs/Run1.2.png?token=GHSAT0AAAAAABOS2XDAK4TMRK6DQV2YR7QMYTKYDVA)
 + **Second Network**:
