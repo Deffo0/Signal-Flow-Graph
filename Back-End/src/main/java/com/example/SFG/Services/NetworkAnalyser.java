@@ -137,7 +137,7 @@ public class NetworkAnalyser {
 
     private void dfs(int startIndex){
         if(visited[startIndex]) {
-            //There is a loop
+            //There is a loop.
             List<String> loopGains = new ArrayList<>();
             List<String> loopSymbols = new ArrayList<>();
             var top = pathSymbols.get(pathSymbols.size() - 1);
